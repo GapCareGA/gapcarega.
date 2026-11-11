@@ -340,8 +340,6 @@
   .home-nav-item:focus-visible, .scale-opt:focus-visible, .btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
   @media (forced-colors: active) { .scale-opt.selected, .tab-btn.active, .lang-btn.active { outline: 2px solid Highlight; } }
 
-  a.btn, :root:not([data-theme="light"]) a.btn { color: var(--on-primary); text-decoration: none; display: inline-block; }
-
   .skip-link {
     position: absolute; left: -999px; top: auto; background: var(--primary); color: var(--on-primary);
     padding: 10px 16px; border-radius: 3px; z-index: 200;
@@ -350,7 +348,7 @@
   .skip-link:focus { left: 16px; top: 16px; }
 
   @media print {
-    .topbar, .tabs, .home-nav, footer.appfoot, .modal-backdrop, .skip-link, .chat-window, .chat-input-row { display: none !important; }
+    .topbar, .tabs, .home-nav, footer.appfoot, .modal-backdrop, .skip-link { display: none !important; }
     .panel { display: none !important; }
     .panel.active { display: block !important; padding-top: 0; }
     body { background: #fff; color: #000; }
@@ -382,7 +380,6 @@
     <button class="tab-btn" data-tab="mood" data-t="tabMood" role="tab" aria-selected="false" id="tabbtn-mood" aria-controls="panel-mood" tabindex="-1">Mood check-in</button>
     <button class="tab-btn" data-tab="advocate" data-t="tabAdvocate" role="tab" aria-selected="false" id="tabbtn-advocate" aria-controls="panel-advocate" tabindex="-1">Advocate</button>
     <button class="tab-btn" data-tab="best" data-t="tabBest" role="tab" aria-selected="false" id="tabbtn-best" aria-controls="panel-best" tabindex="-1">Best insurance option</button>
-    <button class="tab-btn" data-tab="chat" data-t="tabChat" role="tab" aria-selected="false" id="tabbtn-chat" aria-controls="panel-chat" tabindex="-1">Ask GapCareGA</button>
     <button class="tab-btn" data-tab="refs" data-t="tabRefs" role="tab" aria-selected="false" id="tabbtn-refs" aria-controls="panel-refs" tabindex="-1">References</button>
   </nav>
 </div>
@@ -516,7 +513,7 @@
     <div class="col">
       <div class="eyebrow" data-t="moodEyebrow">PHQ-9 — a standard screening tool</div>
       <h2 data-t="moodH2">How have you been feeling?</h2>
-      <p class="lede" data-t="moodLede">Over the <strong>last two weeks</strong>, how often have you been bothered by each of the following? This stays on your device only — nothing is sent anywhere unless you use the chat tab.</p>
+      <p class="lede" data-t="moodLede">Over the <strong>last two weeks</strong>, how often have you been bothered by each of the following? This stays on your device only — nothing is sent anywhere.</p>
     </div>
 
     <div class="notice" data-t="moodNotice1">This is a screening tool, not a diagnosis. A high score, or any trouble on the last question, is a good reason to talk to a real person — not something to sit with alone.</div>
@@ -552,16 +549,6 @@
       <p class="lede" data-t="bestLede">This turns your coverage gap check into a concrete next step. Complete the check first if you haven't already.</p>
     </div>
     <div id="best-content"></div>
-  </section>
-
-  <section class="panel" id="panel-chat" role="tabpanel" aria-labelledby="tabbtn-chat">
-    <div class="col">
-      <div class="eyebrow" data-t="chatEyebrow">A real conversation with Claude</div>
-      <h2 data-t="chatH2">Ask GapCareGA about coverage or this app</h2>
-      <p class="lede" data-t="chatLinkLede">The chat is Claude, Anthropic's AI, and it opens in a new tab on claude.ai. It can explain Georgia coverage options and how to use this app. It does not diagnose, and it is not a substitute for Georgia Gateway, a clinic, or 211. Claude may ask you to sign in.</p>
-      <p><a class="btn" href="https://claude.ai/artifact/LuKhCouYHVoW5km3cNRXEb" target="_blank" rel="noopener noreferrer" data-t="chatLinkBtn">Open the chat in a new tab</a></p>
-      <p class="hint" data-t="chatLinkPrivacy">What you type in the chat is handled by Claude, not by this site. Please don't enter your name, address, Social Security number or other personal details. In a crisis, use the Crisis support button or call or text 988.</p>
-    </div>
   </section>
 
   <!-- ===================== REFERENCES ===================== -->
@@ -673,7 +660,7 @@ en: {
   brandTag: "a plain-language guide to health coverage and care access in Georgia",
   crisisBtn: "Crisis support",
   tabHome: "Home", tabCoverage: "Coverage gap check", tabClinics: "Find a clinic",
-  tabMood: "Mood check-in", tabAdvocate: "Advocate", tabBest: "Best insurance option", tabChat: "Ask GapCareGA", tabRefs: "References",
+  tabMood: "Mood check-in", tabAdvocate: "Advocate", tabBest: "Best insurance option", tabRefs: "References",
   advEyebrow: "Knowledge and confidence for the exam room",
   advH2: "Advocate for yourself",
   advLede: "Research shows women, people of color, and people with a mental health history are more likely to have their symptoms minimized or reattributed rather than investigated — a pattern researchers call diagnostic overshadowing. Knowing the terms and having language ready can make it harder to brush past you.",
@@ -696,7 +683,7 @@ en: {
   nav1h: "Check the coverage gap →", nav1p: "Enter your household size and income to see roughly where you fall: Pathways, Marketplace subsidies, or the gap itself.",
   nav2h: "Find a clinic →", nav2p: "Search real free and sliding-scale clinics across Georgia, filtered by area and service.",
   nav3h: "Mood check-in →", nav3p: "A private, standard 9-question screening (PHQ-9) you can track over time. Stays on your device.",
-  nav4h: "Ask GapCareGA →", nav4p: "A bounded assistant for plain-language questions about coverage and this app — not a clinician.",
+ 
   nav5h: "Advocate for yourself →", nav5p: "Mental health and insurance terms in plain language, plus scripts for medical appointments so you're harder to dismiss.",
   homeAboutH: "About This App",
   homeAboutP1: "GapCareGA is a bilingual web app built to help uninsured adults in Georgia's Medicaid coverage gap understand their health coverage options, find affordable care, and check in on their mental health. It's designed for the roughly 180,000–200,000 Georgians (U.S. citizens and lawfully present residents, per the Georgia Budget &amp; Policy Institute) who earn too much for traditional Medicaid but too little for full ACA Marketplace savings — people who are often unsure which door to knock on first.",
@@ -729,7 +716,7 @@ en: {
   clinicEmpty: "No matches. Try clearing the search, or use the HRSA finder / 211 link below.",
   moodEyebrow: "PHQ-9 — a standard screening tool",
   moodH2: "How have you been feeling?",
-  moodLede: 'Over the <strong>last two weeks</strong>, how often have you been bothered by each of the following? This stays on your device only — nothing is sent anywhere unless you use the chat tab.',
+  moodLede: 'Over the <strong>last two weeks</strong>, how often have you been bothered by each of the following? This stays on your device only — nothing is sent anywhere.',
   moodNotice1: "This is a screening tool, not a diagnosis. A high score, or any trouble on the last question, is a good reason to talk to a real person — not something to sit with alone.",
   btnMoodResults: "See my results",
   moodHistoryH: "Your check-ins over time",
@@ -746,21 +733,7 @@ en: {
   q9WarnP: "You indicated some thoughts of being better off dead or of hurting yourself, even if only on some days. That matters regardless of your total score. Please use the Crisis support resources at the top of this page, or reach out to someone you trust, right now.",
   moodBottomNotice: "This is a screening tool, not a diagnosis — only a clinician can diagnose depression. If you're a student, campus counseling services and this app's clinic finder are both reasonable next steps.",
   fillAllQ: "Please answer all 9 questions.",
-  chatLinkLede: "The chat is Claude, Anthropic's AI, and it opens in a new tab on claude.ai. It can explain Georgia coverage options and how to use this app. It does not diagnose, and it is not a substitute for Georgia Gateway, a clinic, or 211. Claude may ask you to sign in.",
-  chatLinkBtn: "Open the chat in a new tab",
-  chatLinkPrivacy: "What you type in the chat is handled by Claude, not by this site. Please don't enter your name, address, Social Security number or other personal details. In a crisis, use the Crisis support button or call or text 988.",
-  chatEyebrow: "A real conversation with Claude",
-  chatH2: "Ask GapCareGA about coverage or this app",
-  chatLede: "This is Claude (Anthropic's AI), not a scripted bot — ask it anything, not just questions about this app. It won't diagnose you, give medication guidance, or claim to know your exact eligibility, and it'll point you to crisis resources if things get serious.",
-  chatInputPh: "Type a question…",
   btnSend: "Send",
-  chatWelcome: "Hi, I'm Claude. Ask me anything — Georgia coverage questions, how to use this app, or whatever else is on your mind. I won't diagnose or give medical advice, and for a crisis, please use the Crisis support button above.",
-  chatCrisisNote: "This sounds serious. Please use the Crisis support resources above, or reach out to someone you trust, right now.",
-  chatThinking: "Thinking…",
-  chatUnavailable: "Chat isn't available in this view right now. You can still use the Coverage gap check and Find a clinic tabs, or call 211.",
-  chatNoPermission: "I don't have permission to answer here. You can still use the other tabs, or call 211 for a live person.",
-  chatRateLimited: "Too many requests right now — try again in a moment.",
-  chatGenericError: "Something went wrong reaching the assistant. Try again, or use the other tabs.",
   footer: "GapCareGA is an independent, informational resource and is not affiliated with the State of Georgia, the Georgia Department of Community Health, Medicaid, or any government agency. Coverage figures reflect published 2026 Georgia Pathways to Coverage rules and federal poverty guidelines; program rules can change, and this tool cannot see your actual case. Nothing here is medical, legal, or benefits-counseling advice.",
   footerAbout: "About & Privacy",
   footerUpdated: "Data last verified: September 2026",
@@ -768,11 +741,11 @@ en: {
   aboutTitle: "About GapCareGA",
   aboutIntro: "GapCareGA is an independent, non-commercial informational tool for people navigating Georgia's Medicaid coverage gap. It is not a government service, a law firm, a medical provider, or a benefits-counseling agency, and it does not have access to any government eligibility system or your personal records.",
   aboutWhatH: "What this tool does",
-  aboutWhat: "It estimates where your household likely falls relative to Georgia Pathways to Coverage and ACA Marketplace subsidy ranges, lists real free and sliding-scale clinics, offers a standard PHQ-9 mood screening, and provides a bounded AI assistant for plain-language questions. All estimates are educational and general — only Georgia Gateway, a certified enrollment assister, or the Marketplace can tell you your actual eligibility.",
+  aboutWhat: "It estimates where your household likely falls relative to Georgia Pathways to Coverage and ACA Marketplace subsidy ranges, lists real free and sliding-scale clinics, offers a standard PHQ-9 mood screening, and explains medical and insurance terms in plain language. All estimates are educational and general — only Georgia Gateway, a certified enrollment assister, or the Marketplace can tell you your actual eligibility.",
   aboutDataH: "Data sources",
   aboutData: "2026 HHS Federal Poverty Guidelines; Georgia Pathways to Coverage rules (pathways.georgia.gov); Georgia Gateway (gateway.ga.gov); healthcare.gov; and clinic information gathered from each organization's own public listings. Program rules change; always confirm specifics with the official source.",
   aboutPrivacyH: "Your data",
-  aboutPrivacy: "Your mood check-in history is stored only in your own browser (localStorage) and is never transmitted anywhere. If you use the Ask GapCareGA chat, your messages are sent to Anthropic's Claude API to generate a response, the same way any AI chat works — nothing you type is saved by GapCareGA itself, and no account, tracking, or advertising is used on this site.",
+  aboutPrivacy: "Your mood check-in history is stored only in your own browser (localStorage) and is never transmitted anywhere. This site has no chat, no account, tracking, or advertising.",
   aboutLimitsH: "Limitations",
   aboutLimits: "This tool has not been reviewed by a licensed Georgia benefits counselor or a mental health clinician, and the clinic directory is a curated sample rather than a live, continuously updated feed. Treat every result as a starting point, not a final answer.",
   aboutClose: "Close",
@@ -848,7 +821,7 @@ es: {
   brandTag: "una guía en lenguaje sencillo sobre cobertura de salud y acceso a atención en Georgia",
   crisisBtn: "Ayuda en crisis",
   tabHome: "Inicio", tabCoverage: "Verificar la brecha de cobertura", tabClinics: "Buscar una clínica",
-  tabMood: "Evaluación del ánimo", tabAdvocate: "Defiéndete", tabBest: "Mejor opción de seguro", tabChat: "Preguntar a GapCareGA", tabRefs: "Referencias",
+  tabMood: "Evaluación del ánimo", tabAdvocate: "Defiéndete", tabBest: "Mejor opción de seguro", tabRefs: "Referencias",
   advEyebrow: "Conocimiento y confianza para el consultorio",
   advH2: "Defiéndete a ti mismo(a)",
   advLede: "La investigación muestra que las mujeres, las personas de color, y las personas con historial de salud mental tienen más probabilidades de que sus síntomas sean minimizados o reatribuidos en lugar de investigados — un patrón que los investigadores llaman \"ensombrecimiento diagnóstico\". Conocer los términos y tener el lenguaje listo puede hacer más difícil que te ignoren.",
@@ -871,7 +844,7 @@ es: {
   nav1h: "Verificar la brecha de cobertura →", nav1p: "Ingresa el tamaño de tu hogar y tus ingresos para ver aproximadamente dónde te ubicas: Pathways, subsidios del Mercado, o la brecha misma.",
   nav2h: "Buscar una clínica →", nav2p: "Busca clínicas reales gratuitas o de tarifa variable en Georgia, filtradas por área y servicio.",
   nav3h: "Evaluación del ánimo →", nav3p: "Una evaluación estándar y privada de 9 preguntas (PHQ-9) que puedes seguir con el tiempo. Se queda en tu dispositivo.",
-  nav4h: "Preguntar a GapCareGA →", nav4p: "Un asistente limitado para preguntas en lenguaje sencillo sobre cobertura y esta app — no es un clínico.",
+ 
   nav5h: "Defiéndete a ti mismo(a) →", nav5p: "Términos de salud mental y de seguros en lenguaje sencillo, además de guiones para citas médicas para que sea más difícil que te ignoren.",
   homeAboutH: "Acerca de esta aplicación",
   homeAboutP1: "GapCareGA es una aplicación web bilingüe creada para ayudar a adultos sin seguro en la brecha de cobertura de Medicaid de Georgia a entender sus opciones de cobertura de salud, encontrar atención asequible, y evaluar su salud mental. Está diseñada para los aproximadamente 180,000 a 200,000 georgianos (ciudadanos de EE. UU. y residentes con presencia legal, según el Georgia Budget &amp; Policy Institute) que ganan demasiado para Medicaid tradicional pero muy poco para los ahorros completos del Mercado de ACA — personas que a menudo no saben a qué puerta tocar primero.",
@@ -904,7 +877,7 @@ es: {
   clinicEmpty: "No hay coincidencias. Intenta borrar la búsqueda, o usa el buscador de HRSA / enlace de 211 abajo.",
   moodEyebrow: "PHQ-9 — una herramienta de evaluación estándar",
   moodH2: "¿Cómo te has estado sintiendo?",
-  moodLede: 'Durante las <strong>últimas 2 semanas</strong>, ¿qué tan seguido ha tenido molestias debido a los siguientes problemas? Esto se queda solo en tu dispositivo — no se envía a ningún lado a menos que uses la pestaña de chat.',
+  moodLede: 'Durante las <strong>últimas 2 semanas</strong>, ¿qué tan seguido ha tenido molestias debido a los siguientes problemas? Esto se queda solo en tu dispositivo — no se envía a ningún lado.',
   moodNotice1: "Esta es una herramienta de evaluación, no un diagnóstico. Un puntaje alto, o cualquier dificultad en la última pregunta, es una buena razón para hablar con una persona real — no algo para enfrentar solo/a.",
   btnMoodResults: "Ver mis resultados",
   moodHistoryH: "Tus evaluaciones a lo largo del tiempo",
@@ -921,21 +894,7 @@ es: {
   q9WarnP: "Indicaste algunos pensamientos de que estarías mejor muerto/a o de hacerte daño, aunque sea solo algunos días. Eso importa sin importar tu puntaje total. Por favor usa los recursos de Ayuda en crisis en la parte superior de esta página, o comunícate con alguien de confianza, ahora mismo.",
   moodBottomNotice: "Esta es una herramienta de evaluación, no un diagnóstico — solo un clínico puede diagnosticar depresión. Si eres estudiante, los servicios de consejería del campus y el buscador de clínicas de esta app son ambos buenos próximos pasos.",
   fillAllQ: "Por favor responde las 9 preguntas.",
-  chatLinkLede: "El chat es Claude, la IA de Anthropic, y se abre en una pestaña nueva en claude.ai. Puede explicar las opciones de cobertura en Georgia y cómo usar esta aplicación. No hace diagnósticos y no sustituye a Georgia Gateway, una clínica ni al 211. Es posible que Claude te pida iniciar sesión.",
-  chatLinkBtn: "Abrir el chat en una pestaña nueva",
-  chatLinkPrivacy: "Lo que escribas en el chat lo maneja Claude, no este sitio. Por favor no escribas tu nombre, dirección, número de Seguro Social ni otros datos personales. En una crisis, usa el botón de apoyo en crisis o llama o envía un mensaje de texto al 988.",
-  chatEyebrow: "Una conversación real con Claude",
-  chatH2: "Pregúntale a GapCareGA sobre cobertura o esta app",
-  chatLede: "Este es Claude (la IA de Anthropic), no un bot con guion — pregúntale lo que sea, no solo preguntas sobre esta app. No te diagnosticará, no te dará indicaciones de medicamentos, ni afirmará saber tu elegibilidad exacta, y te dirigirá a recursos de crisis si la situación se pone seria.",
-  chatInputPh: "Escribe una pregunta…",
   btnSend: "Enviar",
-  chatWelcome: "Hola, soy Claude. Pregúntame lo que quieras — dudas sobre cobertura en Georgia, cómo usar esta app, o cualquier otra cosa. No diagnosticaré ni daré consejo médico, y para una crisis, por favor usa el botón de Ayuda en crisis arriba.",
-  chatCrisisNote: "Esto suena serio. Por favor usa los recursos de Ayuda en crisis de arriba, o comunícate con alguien de confianza, ahora mismo.",
-  chatThinking: "Pensando…",
-  chatUnavailable: "El chat no está disponible en esta vista en este momento. Aún puedes usar las pestañas de Verificar la brecha de cobertura y Buscar una clínica, o llamar al 211.",
-  chatNoPermission: "No tengo permiso para responder aquí. Aún puedes usar las otras pestañas, o llamar al 211 para hablar con una persona.",
-  chatRateLimited: "Demasiadas solicitudes en este momento — intenta de nuevo en un momento.",
-  chatGenericError: "Algo salió mal al contactar al asistente. Intenta de nuevo, o usa las otras pestañas.",
   footer: "GapCareGA es un recurso informativo independiente y no está afiliado al estado de Georgia, al Departamento de Salud Comunitaria de Georgia, a Medicaid, ni a ninguna agencia gubernamental. Las cifras de cobertura reflejan las reglas publicadas de Georgia Pathways to Coverage 2026 y las pautas federales de pobreza; las reglas de los programas pueden cambiar, y esta herramienta no puede ver tu caso real. Nada de esto es consejo médico, legal, ni de asesoría de beneficios.",
   footerAbout: "Acerca de y Privacidad",
   footerUpdated: "Datos verificados por última vez: septiembre de 2026",
@@ -943,11 +902,11 @@ es: {
   aboutTitle: "Acerca de GapCareGA",
   aboutIntro: "GapCareGA es una herramienta informativa independiente y sin fines de lucro para personas que navegan la brecha de cobertura de Medicaid en Georgia. No es un servicio gubernamental, un despacho legal, un proveedor médico, ni una agencia de asesoría de beneficios, y no tiene acceso a ningún sistema gubernamental de elegibilidad ni a tus registros personales.",
   aboutWhatH: "Qué hace esta herramienta",
-  aboutWhat: "Estima dónde probablemente se ubica tu hogar respecto a Georgia Pathways to Coverage y los rangos de subsidios del Mercado de ACA, enumera clínicas reales gratuitas y de tarifa variable, ofrece una evaluación estándar del ánimo (PHQ-9), y provee un asistente de IA limitado para preguntas en lenguaje sencillo. Todas las estimaciones son educativas y generales — solo Georgia Gateway, un(a) asesor(a) certificado(a) de inscripción, o el Mercado pueden decirte tu elegibilidad real.",
+  aboutWhat: "Estima dónde probablemente se ubica tu hogar respecto a Georgia Pathways to Coverage y los rangos de subsidios del Mercado de ACA, enumera clínicas reales gratuitas y de tarifa variable, ofrece una evaluación estándar del ánimo (PHQ-9), y explica términos médicos y de seguros en lenguaje sencillo. Todas las estimaciones son educativas y generales — solo Georgia Gateway, un(a) asesor(a) certificado(a) de inscripción, o el Mercado pueden decirte tu elegibilidad real.",
   aboutDataH: "Fuentes de datos",
   aboutData: "Pautas federales de pobreza de HHS 2026; reglas de Georgia Pathways to Coverage (pathways.georgia.gov); Georgia Gateway (gateway.ga.gov); healthcare.gov; e información de clínicas recopilada de los listados públicos de cada organización. Las reglas de los programas cambian; siempre confirma los detalles con la fuente oficial.",
   aboutPrivacyH: "Tus datos",
-  aboutPrivacy: "El historial de tu evaluación del ánimo se guarda solo en tu propio navegador (localStorage) y nunca se transmite a ningún lado. Si usas el chat de Preguntar a GapCareGA, tus mensajes se envían a la API de Claude de Anthropic para generar una respuesta, tal como funciona cualquier chat de IA — nada de lo que escribes es guardado por GapCareGA, y este sitio no usa cuentas, rastreo, ni publicidad.",
+  aboutPrivacy: "El historial de tu evaluación del ánimo se guarda solo en tu propio navegador (localStorage) y nunca se transmite a ningún lado. Este sitio no tiene chat, ni cuentas, ni rastreo, ni publicidad.",
   aboutLimitsH: "Limitaciones",
   aboutLimits: "Esta herramienta no ha sido revisada por un(a) asesor(a) de beneficios certificado(a) de Georgia ni por un(a) clínico(a) de salud mental, y el directorio de clínicas es una muestra curada, no un feed en vivo y continuamente actualizado. Trata cada resultado como un punto de partida, no como una respuesta final.",
   aboutClose: "Cerrar",
