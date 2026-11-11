@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GapCareGA — Georgia Health Access Guide</title>
+<meta name="description" content="A free, bilingual tool for uninsured adults in Georgia's Medicaid coverage gap: check where you stand on coverage, find sliding-scale clinics, and screen your mood — in English or Spanish.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F3;
+    --surface: #FFFFFF;
+    --surface-2: #F1ECE0;
+    --ink: #1C2420;
+    --ink-soft: #4B564F;
+    --ink-faint: #58645C;
+    --primary: #1F4B43;
+    --primary-soft: #2E6358;
+    --primary-tint: #E4EEEA;
+    --accent: #8A5A14;
+    --accent-tint: #F6E9D4;
+    --sage: #7C9885;
+    --urgent: #A6432F;
+    --urgent-tint: #F5E1DA;
+    --urgent-ink: #6E2A1B;
+    --border: #DDD6C7;
+    --control-border: #76807A;
+    --on-primary: #FFFFFF;
+    --border-soft: #E9E4D8;
+    --focus: #1F4B43;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131C18;
+      --surface: #1A241F;
+      --surface-2: #212C26;
+      --ink: #ECE8DD;
+      --ink-soft: #B7C0B9;
+      --ink-faint: #9AA59F;
+      --primary: #7CB2A1;
+      --primary-soft: #8CC4B3;
+      --primary-tint: #223530;
+      --accent: #E0A75E;
+      --accent-tint: #3A2E1B;
+      --sage: #8FB09B;
+      --urgent: #E2836A;
+      --urgent-tint: #3A241E;
+      --urgent-ink: #F3C6B6;
+      --border: #35423C;
+      --control-border: #6F7E77;
+      --on-primary: #0F1A16;
+      --border-soft: #2A342F;
+      --focus: #7CB2A1;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #131C18;
+    --surface: #1A241F;
+    --surface-2: #212C26;
+    --ink: #ECE8DD;
+    --ink-soft: #B7C0B9;
+    --ink-faint: #9AA59F;
+    --primary: #7CB2A1;
+    --primary-soft: #8CC4B3;
+    --primary-tint: #223530;
+    --accent: #E0A75E;
+    --accent-tint: #3A2E1B;
+    --sage: #8FB09B;
+    --urgent: #E2836A;
+    --urgent-tint: #3A241E;
+    --urgent-ink: #F3C6B6;
+    --border: #35423C;
+    --control-border: #6F7E77;
+    --on-primary: #0F1A16;
+    --border-soft: #2A342F;
+    --focus: #7CB2A1;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body { margin: 0; padding: 0; }
+  :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .serif {
+    font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+    margin: 0 0 .4em 0;
+  }
+  p { margin: 0 0 1em 0; color: var(--ink-soft); }
+  a { color: var(--primary-soft); }
+  :root:not([data-theme="light"]) a { color: var(--primary); }
+  button { font-family: inherit; }
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .shell { max-width: 980px; margin: 0 auto; padding: 0 20px 80px; }
+
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  }
+  .topbar-inner {
+    max-width: 980px; margin: 0 auto; padding: 18px 20px 14px;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand-mark {
+    font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 1.55rem;
+    color: var(--primary); letter-spacing: -0.01em;
+  }
+  .brand-tag { color: var(--ink-faint); font-size: .875rem; }
+
+  .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .lang-toggle {
+    display: inline-flex; border: 1px solid var(--control-border); border-radius: 20px; overflow: hidden;
+  }
+  .lang-btn {
+    background: var(--surface); color: var(--ink-faint); border: none; padding: 7px 14px;
+    font-size: .875rem; font-weight: 500; cursor: pointer;
+  }
+  .lang-btn.active { background: var(--primary); color: var(--on-primary); }
+
+  .crisis-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--urgent);
+    border: 1.5px solid var(--urgent); border-radius: 3px;
+    padding: 8px 14px; font-size: .88rem; font-weight: 500; cursor: pointer;
+    white-space: nowrap;
+  }
+  .crisis-btn:hover { background: var(--urgent-tint); }
+  .crisis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--urgent); flex: none; }
+
+  .tabs {
+    max-width: 980px; margin: 0 auto; padding: 0 20px;
+    display: flex; gap: 2px; border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab-btn {
+    background: none; border: none; border-bottom: 3px solid transparent;
+    color: var(--ink-faint); padding: 13px 14px 11px; font-size: .92rem; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+  }
+  .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .tab-btn:hover:not(.active) { color: var(--ink-soft); }
+
+  .panel { display: none; padding-top: 34px; }
+  .panel.active { display: block; }
+  .col { max-width: 640px; }
+
+  .eyebrow { color: var(--accent); font-size: .875rem; font-weight: 500; margin-bottom: 6px; }
+  .lede { font-size: 1.05rem; color: var(--ink-soft); max-width: 60ch; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border-soft);
+    border-radius: 4px; padding: 20px 22px;
+  }
+  .stat-row { display: flex; gap: 28px; flex-wrap: wrap; margin: 22px 0 6px; }
+  .stat { min-width: 140px; }
+  .stat-num { font-family: 'Source Serif 4', serif; font-size: 1.9rem; color: var(--primary); font-weight: 600; }
+  .stat-label { font-size: .875rem; color: var(--ink-faint); margin-top: 2px; }
+
+  .home-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 30px; }
+  @media (max-width: 620px) { .home-nav { grid-template-columns: 1fr; } }
+  .home-nav-item {
+    text-align: left; background: var(--surface); border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--primary); border-radius: 3px; padding: 16px 18px;
+    cursor: pointer;
+  }
+  .home-nav-item:hover { background: var(--primary-tint); }
+  .home-nav-item h3 { font-size: 1.02rem; margin-bottom: 4px; }
+  .home-nav-item p { font-size: .88rem; margin: 0; }
+
+  .notice {
+    border: 1px solid var(--border); border-left: 3px solid var(--sage);
+    background: var(--surface-2); padding: 12px 16px; border-radius: 3px;
+    font-size: .88rem; color: var(--ink-soft); margin: 18px 0;
+  }
+  .notice.urgent { border-left-color: var(--urgent); background: var(--urgent-tint); color: var(--urgent-ink); }
+
+  label { display: block; font-size: .875rem; font-weight: 500; color: var(--ink); margin: 18px 0 6px; }
+  label:first-child { margin-top: 0; }
+  .hint { font-size: .875rem; color: var(--ink-faint); font-weight: 400; margin-top: 2px; }
+  input[type=number], input[type=text], select, textarea {
+    width: 100%; background: var(--surface); color: var(--ink);
+    border: 1px solid var(--control-border); border-radius: 3px; padding: 10px 12px; font-size: .95rem;
+    font-family: inherit;
+  }
+  fieldset { border: none; padding: 0; margin: 18px 0 0; }
+  legend { font-size: .875rem; font-weight: 500; padding: 0 0 6px; }
+  .radio-row { display: flex; gap: 18px; flex-wrap: wrap; }
+  .radio-opt { display: flex; align-items: center; gap: 6px; font-size: .9rem; color: var(--ink-soft); }
+  .check-row { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; font-size: .9rem; color: var(--ink-soft); }
+  .check-row input { margin-top: 3px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary); color: var(--on-primary); border: none; border-radius: 3px;
+    padding: 11px 20px; font-size: .92rem; font-weight: 500; cursor: pointer; margin-top: 22px;
+  }
+  .btn:hover { background: var(--primary-soft); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .result { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border-soft); }
+  .verdict {
+    border-radius: 4px; padding: 18px 20px; margin-bottom: 16px;
+    border: 1px solid var(--border-soft);
+  }
+  .verdict.good { background: var(--primary-tint); border-left: 3px solid var(--primary); }
+  .verdict.warn { background: var(--urgent-tint); border-left: 3px solid var(--urgent); }
+  .verdict.mid { background: var(--accent-tint); border-left: 3px solid var(--accent); }
+  .verdict h3 { font-size: 1.05rem; margin-bottom: 6px; }
+  .verdict p { margin-bottom: 0; font-size: .92rem; }
+  .note-list { margin: 0; padding: 0; list-style: none; }
+  .note-list li {
+    padding: 12px 0; border-bottom: 1px solid var(--border-soft); font-size: .9rem; color: var(--ink-soft);
+  }
+  .note-list li:last-child { border-bottom: none; }
+  .note-list strong { color: var(--ink); }
+
+  .link-list { list-style: none; padding: 0; margin: 10px 0 0; }
+  .link-list li { padding: 6px 0; font-size: .88rem; }
+
+  .clinic-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+  .clinic-controls input, .clinic-controls select { width: auto; flex: 1; min-width: 180px; }
+  .clinic { border-bottom: 1px solid var(--border-soft); padding: 18px 0; }
+  .clinic:first-child { padding-top: 0; }
+  .clinic-name { font-family: 'Source Serif 4', serif; font-weight: 600; font-size: 1.05rem; }
+  .clinic-meta { font-size: .875rem; color: var(--ink-faint); margin: 3px 0 8px; }
+  .clinic-services { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .chip {
+    font-size: .875rem; color: var(--primary-soft); background: var(--primary-tint);
+    border-radius: 20px; padding: 3px 10px;
+  }
+  .clinic-empty { color: var(--ink-faint); font-size: .9rem; padding: 20px 0; }
+
+  .adv-section { margin-top: 38px; }
+  .adv-section:first-child { margin-top: 0; }
+  .adv-section h3 { font-size: 1.05rem; }
+  .adv-section-sub { font-size: .875rem; color: var(--ink-faint); margin-top: -4px; margin-bottom: 16px; max-width: 62ch; }
+  .term-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .term-grid { grid-template-columns: 1fr; } }
+  .term-card { border: 1px solid var(--border-soft); border-radius: 4px; padding: 14px 16px; background: var(--surface); }
+  .term-name { font-family: 'Source Serif 4', serif; font-weight: 600; font-size: .95rem; color: var(--primary-soft); margin-bottom: 4px; }
+  .term-def { font-size: .875rem; color: var(--ink-soft); }
+  .script-list { list-style: none; padding: 0; margin: 0; max-width: 680px; }
+  .script-list li {
+    padding: 12px 14px; border-left: 3px solid var(--sage); background: var(--surface-2);
+    border-radius: 0 3px 3px 0; font-size: .9rem; color: var(--ink-soft); margin-bottom: 10px;
+  }
+  .dialogue { max-width: 620px; }
+  .dialogue-line { margin-bottom: 10px; padding: 10px 14px; border-radius: 8px; font-size: .9rem; }
+  .dialogue-line.patient { background: var(--primary-tint); color: var(--ink); border-bottom-right-radius: 2px; }
+  .dialogue-line.doctor { background: var(--surface-2); color: var(--ink-soft); border-bottom-left-radius: 2px; }
+  .dialogue-speaker { font-weight: 600; font-size: .875rem; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-faint); margin-bottom: 3px; }
+
+  .q-block { border-bottom: 1px solid var(--border-soft); padding: 20px 0; }
+  .q-block:first-child { padding-top: 0; }
+  .q-num { font-size: .875rem; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+  .q-text { font-size: .98rem; color: var(--ink); margin-bottom: 12px; max-width: 56ch; }
+  .scale { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  @media (max-width: 560px) { .scale { grid-template-columns: repeat(2, 1fr); } }
+  .scale-opt {
+    border: 1px solid var(--control-border); border-radius: 3px; padding: 9px 8px; text-align: center;
+    font-size: .875rem; color: var(--ink-soft); cursor: pointer; background: var(--surface);
+  }
+  .scale-opt.selected { border-color: var(--primary); background: var(--primary-tint); color: var(--primary); font-weight: 500; }
+
+  .score-band { display: flex; align-items: baseline; gap: 14px; margin-bottom: 10px; }
+  .score-big { font-family: 'Source Serif 4', serif; font-size: 2.6rem; color: var(--primary); font-weight: 600; }
+  .score-of { color: var(--ink-faint); font-size: .95rem; }
+
+  .history-row { display: flex; align-items: flex-end; gap: 5px; height: 60px; margin-top: 6px; }
+  .history-bar { flex: 1; background: var(--primary-tint); border-radius: 2px 2px 0 0; position: relative; min-width: 6px; }
+  .history-bar .fill { position: absolute; bottom: 0; left: 0; right: 0; background: var(--primary); border-radius: 2px 2px 0 0; }
+  .history-labels { display: flex; justify-content: space-between; font-size: .875rem; color: var(--ink-faint); margin-top: 4px; }
+
+  .chat-window {
+    border: 1px solid var(--border-soft); border-radius: 4px; background: var(--surface);
+    height: 420px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .msg { max-width: 84%; padding: 10px 14px; border-radius: 10px; font-size: .92rem; line-height: 1.5; }
+  .msg.user { align-self: flex-end; background: var(--primary); color: var(--on-primary); border-bottom-right-radius: 2px; }
+  .msg.assistant { align-self: flex-start; background: var(--surface-2); color: var(--ink); border-bottom-left-radius: 2px; }
+  .msg.system-note { align-self: center; background: var(--urgent-tint); color: var(--urgent-ink); font-size: .875rem; border-radius: 4px; }
+  .chat-input-row { display: flex; gap: 10px; margin-top: 14px; }
+  .chat-input-row textarea { resize: none; height: 46px; padding-top: 12px; }
+  .chat-input-row .btn { margin-top: 0; flex: none; }
+
+  .modal-backdrop {
+    display: none; position: fixed; inset: 0; background: rgba(20,20,16,.45); z-index: 100;
+    align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 6px; max-width: 480px; width: 100%;
+    padding: 26px 26px 22px; border-top: 4px solid var(--urgent);
+  }
+  .modal h2 { color: var(--urgent-ink); font-size: 1.25rem; }
+  .modal-close {
+    float: right; background: none; border: none; color: var(--ink-faint); font-size: 1.3rem; cursor: pointer; line-height: 1;
+  }
+  .crisis-entry { padding: 12px 0; border-bottom: 1px solid var(--border-soft); }
+  .crisis-entry:last-child { border-bottom: none; }
+  .crisis-entry .how { font-family: 'Source Serif 4', serif; font-size: 1.1rem; color: var(--urgent-ink); font-weight: 600; }
+  .crisis-entry p { margin: 3px 0 0; font-size: .88rem; }
+
+  footer.appfoot { max-width: 980px; margin: 60px auto 0; padding: 20px; color: var(--ink-faint); font-size: .875rem; border-top: 1px solid var(--border-soft); }
+
+
+  /* ---- accessibility additions (WCAG 2.1 AA) ---- */
+  .sr-only { position:absolute !important; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .tab-btn.active { font-weight: 700; }
+  .lang-btn.active { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .scale-opt.selected { border-width: 2px; padding: 8px 7px; }
+  .scale-opt.selected::before { content: "\2713\00a0"; }
+  .scale-opt:hover { background: var(--primary-tint); }
+  .verdict h3::before { content: ""; }
+  .notice.urgent::before { content: "\26A0\00a0"; }
+  .history-bar { border: 1px solid var(--control-border); }
+  .history-bar .fill { border-top: 2px solid var(--on-primary); }
+  .modal-backdrop :focus-visible, .tabs :focus-visible, .topbar :focus-visible { outline-offset: -2px; }
+  .home-nav-item:focus-visible, .scale-opt:focus-visible, .btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  @media (forced-colors: active) { .scale-opt.selected, .tab-btn.active, .lang-btn.active { outline: 2px solid Highlight; } }
+
+  a.btn, :root:not([data-theme="light"]) a.btn { color: var(--on-primary); text-decoration: none; display: inline-block; }
+
+  .skip-link {
+    position: absolute; left: -999px; top: auto; background: var(--primary); color: var(--on-primary);
+    padding: 10px 16px; border-radius: 3px; z-index: 200;
+  }
+  .skip-link, :root:not([data-theme="light"]) a.skip-link { color: var(--on-primary); }
+  .skip-link:focus { left: 16px; top: 16px; }
+
+  @media print {
+    .topbar, .tabs, .home-nav, footer.appfoot, .modal-backdrop, .skip-link, .chat-window, .chat-input-row { display: none !important; }
+    .panel { display: none !important; }
+    .panel.active { display: block !important; padding-top: 0; }
+    body { background: #fff; color: #000; }
+    .btn { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">GapCareGA</span>
+      <span class="brand-tag" data-t="brandTag">a plain-language guide to health coverage and care access in Georgia</span>
+    </div>
+    <div class="topbar-actions">
+      <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+        <button class="lang-btn active" id="lang-en" onclick="setLang('en')" aria-label="English" aria-pressed="true">EN</button>
+        <button class="lang-btn" id="lang-es" onclick="setLang('es')" aria-label="Español" aria-pressed="false">ES</button>
+      </div>
+      <button class="crisis-btn" onclick="openCrisisModal()"><span class="crisis-dot" aria-hidden="true"></span> <span data-t="crisisBtn">Crisis support</span></button>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections">
+    <button class="tab-btn active" data-tab="home" data-t="tabHome" role="tab" aria-selected="true" id="tabbtn-home" aria-controls="panel-home" tabindex="0">Home</button>
+    <button class="tab-btn" data-tab="coverage" data-t="tabCoverage" role="tab" aria-selected="false" id="tabbtn-coverage" aria-controls="panel-coverage" tabindex="-1">Coverage gap check</button>
+    <button class="tab-btn" data-tab="clinics" data-t="tabClinics" role="tab" aria-selected="false" id="tabbtn-clinics" aria-controls="panel-clinics" tabindex="-1">Find a clinic</button>
+    <button class="tab-btn" data-tab="mood" data-t="tabMood" role="tab" aria-selected="false" id="tabbtn-mood" aria-controls="panel-mood" tabindex="-1">Mood check-in</button>
+    <button class="tab-btn" data-tab="advocate" data-t="tabAdvocate" role="tab" aria-selected="false" id="tabbtn-advocate" aria-controls="panel-advocate" tabindex="-1">Advocate</button>
+    <button class="tab-btn" data-tab="best" data-t="tabBest" role="tab" aria-selected="false" id="tabbtn-best" aria-controls="panel-best" tabindex="-1">Best insurance option</button>
+    <button class="tab-btn" data-tab="chat" data-t="tabChat" role="tab" aria-selected="false" id="tabbtn-chat" aria-controls="panel-chat" tabindex="-1">Ask GapCareGA</button>
+    <button class="tab-btn" data-tab="refs" data-t="tabRefs" role="tab" aria-selected="false" id="tabbtn-refs" aria-controls="panel-refs" tabindex="-1">References</button>
+  </nav>
+</div>
+
+<main class="shell" id="main-content">
+
+  <!-- ===================== HOME ===================== -->
+  <section class="panel active" id="panel-home" role="tabpanel" aria-labelledby="tabbtn-home">
+    <div class="col">
+      <div class="eyebrow" data-t="homeEyebrow">For uninsured adults in Georgia's coverage gap</div>
+      <h1 data-t="homeH1">Health coverage is confusing on purpose. This isn't.</h1>
+      <p class="lede" data-t="homeLede">Georgia never fully expanded Medicaid. Roughly 180,000–200,000 adults (U.S. citizens and lawfully present residents, per the Georgia Budget & Policy Institute) earn too much for traditional Medicaid but too little for full Marketplace savings — stuck in what's called the coverage gap. GapCareGA helps you see where you stand, find care you can actually afford, and check in on how you're doing while you sort it out.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label" data-t="stat1">FPL is the Pathways to Coverage income ceiling</div></div>
+      <div class="stat"><div class="stat-num" data-t="stat2num">80 hrs</div><div class="stat-label" data-t="stat2">qualifying activity required per month</div></div>
+      <div class="stat"><div class="stat-num">200k+</div><div class="stat-label" data-t="stat3">Georgians estimated to sit in the coverage gap</div></div>
+    </div>
+
+    <div class="notice" data-t="homeNotice">GapCareGA is an independent, informational tool. It uses current Georgia program data (2026 figures) and a curated clinic directory, but it is not a substitute for an official eligibility determination, a certified benefits navigator, or professional medical or mental health care. It is not affiliated with the State of Georgia or any government agency.</div>
+
+    <div class="home-nav">
+      <button class="home-nav-item" onclick="showTab('coverage')">
+        <h3 data-t="nav1h">Check the coverage gap →</h3>
+        <p data-t="nav1p">Enter your household size and income to see roughly where you fall: Pathways, Marketplace subsidies, or the gap itself.</p>
+      </button>
+      <button class="home-nav-item" onclick="showTab('clinics')">
+        <h3 data-t="nav2h">Find a clinic →</h3>
+        <p data-t="nav2p">Search real free and sliding-scale clinics across Georgia, filtered by area and service.</p>
+      </button>
+      <button class="home-nav-item" onclick="showTab('mood')">
+        <h3 data-t="nav3h">Mood check-in →</h3>
+        <p data-t="nav3p">A private, standard 9-question screening (PHQ-9) you can track over time. Stays on your device.</p>
+      </button>
+      <button class="home-nav-item" onclick="showTab('advocate')">
+        <h3 data-t="nav5h">Advocate for yourself →</h3>
+        <p data-t="nav5p">Mental health and insurance terms in plain language, plus scripts for medical appointments so you're harder to dismiss.</p>
+      </button>
+    </div>
+
+    <div class="col" style="margin-top:44px;padding-top:32px;border-top:1px solid var(--border-soft);">
+      <h2 style="font-size:1.2rem;" data-t="homeAboutH">About This App</h2>
+      <p data-t="homeAboutP1"></p>
+      <p data-t="homeAboutP2"></p>
+      <p data-t="homeAboutP3"></p>
+      <p data-t="homeAboutP4" style="margin-bottom:0;"></p>
+    </div>
+  </section>
+
+  <!-- ===================== COVERAGE ===================== -->
+  <section class="panel" id="panel-coverage" role="tabpanel" aria-labelledby="tabbtn-coverage">
+    <div class="col">
+      <div class="eyebrow" data-t="covEyebrow">Educational estimate, not a determination</div>
+      <h2 data-t="covH2">Where do you fall in Georgia's coverage picture?</h2>
+      <p class="lede" data-t="covLede">Answer a few questions about your household. This tool uses the 2026 federal poverty guidelines and Georgia Pathways to Coverage rules to estimate your likely bucket — it can't see your actual case.</p>
+    </div>
+
+    <div class="card col">
+      <label for="hh-size" data-t="lblSize">Household size</label>
+      <select id="hh-size">
+        <option value="1" data-t="opt1p">1 person</option>
+        <option value="2" data-t="opt2p">2 people</option>
+        <option value="3" data-t="opt3p">3 people</option>
+        <option value="4" data-t="opt4p">4 people</option>
+        <option value="5" data-t="opt5p">5 people</option>
+        <option value="6" data-t="opt6p">6 people</option>
+        <option value="7" data-t="opt7p">7 people</option>
+        <option value="8" data-t="opt8p">8 people</option>
+        <option value="9" data-t="opt9p">9 people</option>
+        <option value="10" data-t="opt10p">10 people</option>
+        <option value="11" data-t="opt11p">11 people</option>
+        <option value="12" data-t="opt12p">12 people</option>
+      </select>
+      <div class="hint" data-t="hintSize">Everyone you'd claim together on a Medicaid or Marketplace application.</div>
+
+      <label for="hh-income" data-t="lblIncome">Household gross annual income ($)</label>
+      <input type="number" id="hh-income" min="0" step="500" placeholder="e.g. 14500">
+      <div class="hint" data-t="hintIncome">Before taxes, combined for the household. If you know monthly income, multiply by 12.</div>
+
+      <label for="hh-age" data-t="lblAge">Your age</label>
+      <input type="number" id="hh-age" min="0" max="120" placeholder="e.g. 24">
+
+      <fieldset>
+        <legend data-t="legendHrs">Do you already complete about 80 hours a month of work, school, job training, or a similar qualifying activity?</legend>
+        <div class="radio-row">
+          <label class="radio-opt"><input type="radio" name="hrs" value="yes"> <span data-t="yes">Yes</span></label>
+          <label class="radio-opt"><input type="radio" name="hrs" value="no"> <span data-t="no">No</span></label>
+          <label class="radio-opt"><input type="radio" name="hrs" value="unsure" checked> <span data-t="unsure">Not sure</span></label>
+        </div>
+      </fieldset>
+
+      <label class="check-row"><input type="checkbox" id="hh-pregnant"> <span data-t="chkPregnant">I am currently pregnant</span></label>
+      <label class="check-row"><input type="checkbox" id="hh-parent"> <span data-t="chkParent">I'm a parent or caretaker of a minor child who lives with me</span></label>
+      <label class="check-row"><input type="checkbox" id="hh-disability"> <span data-t="chkDisability">I have a qualifying disability or receive SSI</span></label>
+      <label class="check-row"><input type="checkbox" id="hh-frail"> <span data-t="chkFrail">I have a serious medical condition that could qualify as "medically frail" (e.g., cancer, end-stage renal disease, sickle cell disease, or certain HIV-related diagnoses)</span></label>
+      <label class="check-row"><input type="checkbox" id="hh-caregiver"> <span data-t="chkCaregiver">I'm a full-time unpaid caregiver for a family member (not a minor child)</span></label>
+
+      <button class="btn" onclick="runCoverageCheck()" data-t="btnEstimate">See my estimate</button>
+
+      <div class="result" id="coverage-result" style="display:none;" aria-live="polite"></div>
+    </div>
+
+    <div class="notice" style="max-width:640px;" data-t="covFootnote">Georgia Pathways received a federal extension only through December 31, 2026, and the state is seeking a longer renewal — rules can change. Always confirm through <a href="https://gateway.ga.gov" target="_blank" rel="noopener">Georgia Gateway</a> or by calling <strong>211</strong>.</div>
+  </section>
+
+  <!-- ===================== CLINICS ===================== -->
+  <section class="panel" id="panel-clinics" role="tabpanel" aria-labelledby="tabbtn-clinics">
+    <div class="eyebrow" data-t="clinEyebrow">Real, current directory</div>
+    <h2 data-t="clinH2">Free and sliding-scale care in Georgia</h2>
+    <p class="lede col" data-t="clinLede">A working list of federally qualified health centers and free/charitable clinics that treat people regardless of insurance status. Call ahead — hours and sliding-scale documentation requirements change.</p>
+
+    <div class="clinic-controls">
+      <input type="text" id="clinic-search" data-t-placeholder="clinSearchPh" placeholder="Search by name or service…" oninput="renderClinics()">
+      <select id="clinic-area" onchange="renderClinics()">
+        <option value="" data-t="areaAll">All areas</option>
+        <option value="Gwinnett" data-t="areaGwinnett">Gwinnett County</option>
+        <option value="Fulton/Atlanta metro" data-t="areaFulton">Fulton / Atlanta metro</option>
+        <option value="Rural west Georgia" data-t="areaRural">Rural west Georgia</option>
+        <option value="Statewide" data-t="areaState">Statewide</option>
+      </select>
+    </div>
+
+    <div id="clinic-list"></div>
+
+    <div class="notice" data-t="clinFootnote">This list isn't exhaustive. For the fullest, most current directory, use the federal <a href="https://findahealthcenter.hrsa.gov" target="_blank" rel="noopener">HRSA Find a Health Center</a> tool or call <strong>211</strong> (a free, confidential referral line; online directory at <a href="https://211online.unitedwayatlanta.org" target="_blank" rel="noopener">211online.unitedwayatlanta.org</a>) for a live referral near you.</div>
+  </section>
+
+  <!-- ===================== MOOD ===================== -->
+  <section class="panel" id="panel-mood" role="tabpanel" aria-labelledby="tabbtn-mood">
+    <div class="col">
+      <div class="eyebrow" data-t="moodEyebrow">PHQ-9 — a standard screening tool</div>
+      <h2 data-t="moodH2">How have you been feeling?</h2>
+      <p class="lede" data-t="moodLede">Over the <strong>last two weeks</strong>, how often have you been bothered by each of the following? This stays on your device only — nothing is sent anywhere unless you use the chat tab.</p>
+    </div>
+
+    <div class="notice" data-t="moodNotice1">This is a screening tool, not a diagnosis. A high score, or any trouble on the last question, is a good reason to talk to a real person — not something to sit with alone.</div>
+
+    <div class="card col" id="phq-form"></div>
+
+    <button class="btn col" onclick="scorePhq()" data-t="btnMoodResults">See my results</button>
+
+    <div class="result col" id="mood-result" style="display:none;" aria-live="polite"></div>
+
+    <div class="col" id="mood-history" style="margin-top:36px; display:none;">
+      <h3 style="font-size:1rem;" data-t="moodHistoryH">Your check-ins over time</h3>
+      <div class="history-row" id="history-bars"></div>
+      <div class="history-labels" id="history-labels"></div>
+    </div>
+  </section>
+
+  <!-- ===================== ADVOCATE ===================== -->
+  <section class="panel" id="panel-advocate" role="tabpanel" aria-labelledby="tabbtn-advocate">
+    <div class="col">
+      <div class="eyebrow" data-t="advEyebrow">Knowledge and confidence for the exam room</div>
+      <h2 data-t="advH2">Advocate for yourself</h2>
+      <p class="lede" data-t="advLede">Research shows women, people of color, and people with a mental health history are more likely to have their symptoms minimized or reattributed rather than investigated — a pattern researchers call diagnostic overshadowing. Knowing the terms and having language ready can make it harder to brush past you.</p>
+    </div>
+    <div id="advocate-content"></div>
+  </section>
+
+  <!-- ===================== BEST OPTION ===================== -->
+  <section class="panel" id="panel-best" role="tabpanel" aria-labelledby="tabbtn-best">
+    <div class="col">
+      <div class="eyebrow" data-t="bestEyebrow">Based on your coverage gap check</div>
+      <h2 data-t="bestH2">Your best insurance option</h2>
+      <p class="lede" data-t="bestLede">This turns your coverage gap check into a concrete next step. Complete the check first if you haven't already.</p>
+    </div>
+    <div id="best-content"></div>
+  </section>
+
+  <section class="panel" id="panel-chat" role="tabpanel" aria-labelledby="tabbtn-chat">
+    <div class="col">
+      <div class="eyebrow" data-t="chatEyebrow">A real conversation with Claude</div>
+      <h2 data-t="chatH2">Ask GapCareGA about coverage or this app</h2>
+      <p class="lede" data-t="chatLinkLede">The chat is Claude, Anthropic's AI, and it opens in a new tab on claude.ai. It can explain Georgia coverage options and how to use this app. It does not diagnose, and it is not a substitute for Georgia Gateway, a clinic, or 211. Claude may ask you to sign in.</p>
+      <p><a class="btn" href="https://claude.ai/artifact/LuKhCouYHVoW5km3cNRXEb" target="_blank" rel="noopener noreferrer" data-t="chatLinkBtn">Open the chat in a new tab</a></p>
+      <p class="hint" data-t="chatLinkPrivacy">What you type in the chat is handled by Claude, not by this site. Please don't enter your name, address, Social Security number or other personal details. In a crisis, use the Crisis support button or call or text 988.</p>
+    </div>
+  </section>
+
+  <!-- ===================== REFERENCES ===================== -->
+  <section class="panel" id="panel-refs" role="tabpanel" aria-labelledby="tabbtn-refs">
+    <div class="col">
+      <div class="eyebrow" data-t="refsEyebrow">Sources, in APA 7th edition format</div>
+      <h2 data-t="refsH2">References</h2>
+      <p class="lede" data-t="refsLede">Every program rule, income figure, clinic listing, and screening instrument in this app is drawn from one of these sources.</p>
+    </div>
+    <div class="card" style="font-size:.88rem;line-height:1.7;">
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Atlanta News First. (2026, August 24). <em>Doctors testify as Georgia Medicaid program faces deadline</em>. https://www.atlantanewsfirst.com/2026/08/24/doctors-testify-georgia-medicaid-program-faces-deadline/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Centers for Medicare &amp; Medicaid Services. (n.d.). <em>Health insurance marketplace</em>. HealthCare.gov. Retrieved October 9, 2026, from https://www.healthcare.gov</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Chan, L. (2025, October 13). <em>Pathways to Coverage: Looking back two years and into the future</em>. Georgia Budget &amp; Policy Institute. https://gbpi.org/pathways-to-coverage-looking-back-two-years-and-into-the-future/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Cleveland Clinic. (2024, July 9). <em>What is an ombudsman?</em> https://my.clevelandclinic.org/health/articles/ombudsman</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">CPACS Cosmo Health Center. (n.d.). <em>Primary care, dental &amp; behavioral health</em>. Retrieved October 9, 2026, from https://www.cpacscosmo.org/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Crisis Text Line. (n.d.). <em>Text with us</em>. Retrieved October 9, 2026, from https://www.crisistextline.org</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Family Health Centers of Georgia, Inc. (n.d.). <em>About us</em>. Retrieved October 9, 2026, from https://fhcga.org/about-us</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Faytong-Haro, M. (2025, November 20). Medical gaslighting: Navigating patient-clinician mistrust in healthcare. <em>Frontiers in Health Services</em>. https://doi.org/10.3389/frhs.2025.1633672</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Gardner, A., Alker, J., &amp; Cuello, L. (2023, June 27). <em>An analysis of Georgia's Section 1115 Medicaid Pathways to Coverage program</em>. Georgetown University Center for Children and Families. https://ccf.georgetown.edu/2023/06/27/an-analysis-of-georgias-section-1115-medicaid-pathways-to-coverage-program/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Georgia Department of Behavioral Health and Developmental Disabilities. (n.d.). <em>Mobile crisis services</em>. Retrieved October 9, 2026, from https://dbhdd.georgia.gov/mobile-crisis-services</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Georgia Department of Community Health. (n.d.-a). <em>Georgia Pathways to Coverage</em>. Retrieved October 9, 2026, from https://pathways.georgia.gov</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Georgia Department of Community Health. (n.d.-b). <em>H.R. 1 changes to Pathways</em>. Retrieved October 9, 2026, from https://pathways.georgia.gov/node/1646</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Georgia Department of Human Services. (n.d.). <em>Georgia Gateway</em>. Retrieved October 9, 2026, from https://gateway.ga.gov</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Georgia Lions Lighthouse Foundation, Inc. (n.d.). <em>Home</em>. Retrieved October 9, 2026, from https://lionslighthouse.org/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Georgia Recorder. (n.d.). <em>Georgia board adds certain HIV diagnoses to conditions that can bypass Medicaid work requirements</em>. Retrieved October 9, 2026, from https://georgiarecorder.com/briefs/georgia-board-adds-certain-hiv-diagnoses-to-conditions-that-can-bypass-medicaid-work-requirements/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Good Samaritan Health Center of Gwinnett. (n.d.). <em>Home</em>. Retrieved October 9, 2026, from https://goodsamgwinnett.org/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Health Resources and Services Administration. (n.d.). <em>Find a health center</em>. U.S. Department of Health and Human Services. Retrieved October 9, 2026, from https://findahealthcenter.hrsa.gov</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">KFF. (2019, October 25). <em>ACA open enrollment: For consumers considering short-term policies</em>. https://www.kff.org/private-insurance/aca-open-enrollment-for-consumers-considering-short-term-policies/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">KFF. (2025, September 30). <em>ACA Marketplace premium payments would more than double on average next year if enhanced premium tax credits expire</em>. https://www.kff.org/affordable-care-act/aca-marketplace-premium-payments-would-more-than-double-on-average-next-year-if-enhanced-premium-tax-credits-expire/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Kroenke, K., Spitzer, R. L., &amp; Williams, J. B. W. (2001). The PHQ-9: Validity of a brief depression severity measure. <em>Journal of General Internal Medicine, 16</em>(9), 606–613. https://doi.org/10.1046/j.1525-1497.2001.016009606.x</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">MedCura Health. (n.d.). <em>MedCura Health | 16 locations throughout Atlanta Georgia metro</em>. Retrieved October 9, 2026, from https://medcura.org/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Mercy Care. (n.d.-a). <em>Mercy Care Atlanta</em>. Retrieved October 9, 2026, from https://mercyatlanta.org/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Mercy Care. (n.d.-b). <em>Mercy Care Decatur Street</em>. Retrieved October 9, 2026, from https://mercyatlanta.org/location/mercy-care-decatur-street/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">988 Suicide &amp; Crisis Lifeline. (n.d.). <em>Home</em>. Retrieved October 9, 2026, from https://988lifeline.org/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Oakhurst Medical Centers. (n.d.). <em>Home</em>. Retrieved October 9, 2026, from https://www.oakhurstmedical.org</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Social Security Administration. (n.d.). <em>Sign up for Medicare</em>. Retrieved October 9, 2026, from https://www.ssa.gov/medicare/sign-up</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Spitzer, R. L., Kroenke, K., Williams, J. B. W., &amp; the Patient Health Questionnaire Primary Care Study Group. (1999). Validation and utility of a self-report version of PRIME-MD: The PHQ primary care study. <em>JAMA, 282</em>(18), 1737–1744. https://doi.org/10.1001/jama.282.18.1737</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">Substance Abuse and Mental Health Services Administration. (n.d.). <em>National helpline for mental health, drug, alcohol issues</em>. Retrieved October 9, 2026, from https://www.samhsa.gov/find-help/helplines/national-helpline</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">United Way of Greater Atlanta. (n.d.). <em>211: Since 1997, help is just three digits away</em>. Retrieved October 9, 2026, from https://unitedwayatlanta.org/211</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">University of Washington Harborview Abuse and Trauma Center. (n.d.). <em>Patient Health Questionnaire-9 (PHQ-9): Spanish version for the USA</em>. Retrieved October 9, 2026, from https://depts.washington.edu/uwhatc/</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">U.S. Department of Health and Human Services, Office of the Assistant Secretary for Planning and Evaluation. (2026). <em>Poverty guidelines</em>. Retrieved October 9, 2026, from https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;">U.S. Department of Labor. (n.d.). <em>Continuation of health coverage (COBRA)</em>. Retrieved October 9, 2026, from https://www.dol.gov/general/topic/health-plans/cobra</p>
+      <p style="padding-left:1.5em;text-indent:-1.5em;margin-bottom:0;">YourTown Health. (n.d.). <em>Affordable healthcare | Community health center</em>. Retrieved October 9, 2026, from https://www.yourtownhealth.com/</p>
+    </div>
+    <p style="font-size:.875rem;color:var(--ink-faint);margin-top:14px;" data-t="refsNote">Per APA 7th edition, a reference beginning with a number (988 Suicide &amp; Crisis Lifeline) is alphabetized as though the number were spelled out.</p>
+  </section>
+
+</main>
+
+<footer class="appfoot">
+  <p data-t="footer" style="margin-bottom:10px;">GapCareGA is an independent, informational resource and is not affiliated with the State of Georgia, the Georgia Department of Community Health, Medicaid, or any government agency. Coverage figures reflect published 2026 Georgia Pathways to Coverage rules and federal poverty guidelines; program rules can change, and this tool cannot see your actual case. Nothing here is medical, legal, or benefits-counseling advice.</p>
+  <p style="margin:0;">
+    <button onclick="openAboutModal()" style="background:none;border:none;padding:0;color:var(--primary-soft);text-decoration:underline;cursor:pointer;font-size:.875rem;" data-t="footerAbout">About &amp; Privacy</button>
+    &nbsp;·&nbsp;
+    <span data-t="footerUpdated">Data last verified: September 2026</span>
+  </p>
+</footer>
+
+<!-- ===================== CRISIS MODAL ===================== -->
+<div class="modal-backdrop" id="crisis-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="crisis-title">
+    <button class="modal-close" onclick="closeCrisisModal()" aria-label="Close"><span aria-hidden="true">×</span></button>
+    <h2 id="crisis-title" data-t="crisisTitle">You don't have to handle this alone</h2>
+    <p style="font-size:.9rem;" data-t="crisisSub">These are free, confidential, and available right now.</p>
+    <div class="crisis-entry">
+      <div class="how">988</div>
+      <p data-t="crisis1">988 Suicide &amp; Crisis Lifeline — call or text, for suicidal thoughts, self-harm, or any mental health crisis. Available 24/7. Spanish-language support available.</p>
+    </div>
+    <div class="crisis-entry">
+      <div class="how" data-t="crisis2how">Text HOME to 741741</div>
+      <p data-t="crisis2">Crisis Text Line — free, confidential text-based support, 24/7.</p>
+    </div>
+    <div class="crisis-entry">
+      <div class="how">1-800-715-4225</div>
+      <p data-t="crisis3">Georgia Crisis &amp; Access Line (GCAL) — connects you to Georgia mental health, crisis, and substance use services, 24/7.</p>
+    </div>
+    <div class="crisis-entry">
+      <div class="how">1-800-662-4357</div>
+      <p data-t="crisis4">SAMHSA National Helpline — free, confidential treatment referral and information service for mental health and substance use.</p>
+    </div>
+    <div class="crisis-entry">
+      <div class="how" data-t="crisis5how">Call 911</div>
+      <p data-t="crisis5">If you or someone else is in immediate physical danger.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ABOUT / PRIVACY MODAL ===================== -->
+<div class="modal-backdrop" id="about-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="about-title" style="border-top-color:var(--primary);">
+    <button class="modal-close" onclick="closeAboutModal()" aria-label="Close"><span aria-hidden="true">×</span></button>
+    <h2 id="about-title" data-t="aboutTitle" style="color:var(--primary);">About GapCareGA</h2>
+    <p style="font-size:.9rem;" data-t="aboutIntro"></p>
+    <h3 style="font-size:.95rem;margin-top:18px;" data-t="aboutWhatH"></h3>
+    <p style="font-size:.88rem;" data-t="aboutWhat"></p>
+    <h3 style="font-size:.95rem;margin-top:18px;" data-t="aboutDataH"></h3>
+    <p style="font-size:.88rem;" data-t="aboutData"></p>
+    <h3 style="font-size:.95rem;margin-top:18px;" data-t="aboutPrivacyH"></h3>
+    <p style="font-size:.88rem;" data-t="aboutPrivacy"></p>
+    <h3 style="font-size:.95rem;margin-top:18px;" data-t="aboutLimitsH"></h3>
+    <p style="font-size:.88rem;margin-bottom:0;" data-t="aboutLimits"></p>
+  </div>
+</div>
+
+<script>
+/* ============ I18N ============ */
+const T = {
+en: {
+  brandTag: "a plain-language guide to health coverage and care access in Georgia",
+  crisisBtn: "Crisis support",
+  tabHome: "Home", tabCoverage: "Coverage gap check", tabClinics: "Find a clinic",
+  tabMood: "Mood check-in", tabAdvocate: "Advocate", tabBest: "Best insurance option", tabChat: "Ask GapCareGA", tabRefs: "References",
+  advEyebrow: "Knowledge and confidence for the exam room",
+  advH2: "Advocate for yourself",
+  advLede: "Research shows women, people of color, and people with a mental health history are more likely to have their symptoms minimized or reattributed rather than investigated — a pattern researchers call diagnostic overshadowing. Knowing the terms and having language ready can make it harder to brush past you.",
+  advMHTermsH: "Mental health terms, in plain language",
+  advMHTermsSub: "These are general clinical definitions, not a way to diagnose yourself or someone else — only a licensed clinician can do that. If any of these feel familiar, that's worth raising with a provider, not deciding on your own.",
+  advJargonH: "Clinic and insurance terms",
+  advJargonSub: "The vocabulary providers and insurers use every day, in plain English.",
+  advBeforeH: "Before the appointment",
+  advDuringH: "During the appointment",
+  advDismissedH: "If you feel dismissed",
+  advDialogueH: "What this can sound like",
+  advDialogueSub: "A short example. You won't sound like a script — this is just to show the shape of it.",
+  homeEyebrow: "For uninsured adults in Georgia's coverage gap",
+  homeH1: "Health coverage is confusing on purpose. This isn't.",
+  homeLede: "Georgia never fully expanded Medicaid. Roughly 180,000–200,000 adults (U.S. citizens and lawfully present residents, per the Georgia Budget & Policy Institute) earn too much for traditional Medicaid but too little for full Marketplace savings — stuck in what's called the coverage gap. GapCareGA helps you see where you stand, find care you can actually afford, and check in on how you're doing while you sort it out.",
+  stat1: "FPL is the Pathways to Coverage income ceiling",
+  stat2num: "80 hrs", stat2: "qualifying activity required per month",
+  stat3: "Georgians estimated to sit in the coverage gap",
+  homeNotice: "GapCareGA is an independent, informational tool. It uses current Georgia program data (2026 figures) and a curated clinic directory, but it is not a substitute for an official eligibility determination, a certified benefits navigator, or professional medical or mental health care. It is not affiliated with the State of Georgia or any government agency.",
+  nav1h: "Check the coverage gap →", nav1p: "Enter your household size and income to see roughly where you fall: Pathways, Marketplace subsidies, or the gap itself.",
+  nav2h: "Find a clinic →", nav2p: "Search real free and sliding-scale clinics across Georgia, filtered by area and service.",
+  nav3h: "Mood check-in →", nav3p: "A private, standard 9-question screening (PHQ-9) you can track over time. Stays on your device.",
+  nav4h: "Ask GapCareGA →", nav4p: "A bounded assistant for plain-language questions about coverage and this app — not a clinician.",
+  nav5h: "Advocate for yourself →", nav5p: "Mental health and insurance terms in plain language, plus scripts for medical appointments so you're harder to dismiss.",
+  homeAboutH: "About This App",
+  homeAboutP1: "GapCareGA is a bilingual web app built to help uninsured adults in Georgia's Medicaid coverage gap understand their health coverage options, find affordable care, and check in on their mental health. It's designed for the roughly 180,000–200,000 Georgians (U.S. citizens and lawfully present residents, per the Georgia Budget &amp; Policy Institute) who earn too much for traditional Medicaid but too little for full ACA Marketplace savings — people who are often unsure which door to knock on first.",
+  homeAboutP2: "The coverage gap contributes to delayed diagnoses, untreated chronic conditions, and worse mental health outcomes, since people without affordable coverage often skip preventive and routine care until a problem becomes an emergency. GapCareGA tries to shorten that gap by pointing people toward one concrete next step instead of a maze of eligibility rules.",
+  homeAboutP3: "What this app cannot do: it cannot see your actual case, verify your eligibility, or guarantee a clinic or program will accept you — every estimate here is general, and only Georgia Gateway, a certified enrollment assister, or a licensed provider can give you a real determination. It has also not yet been reviewed by a licensed Georgia benefits counselor or a mental health clinician.",
+  homeAboutP4: "It's also not well suited to some of the people who need coverage help most. It doesn't model immigration-status-based eligibility rules, so undocumented immigrants and some lawfully present immigrants navigating different waiting periods won't get an accurate picture from the coverage gap check. And because it's a text-heavy web app, people without reliable internet access, a smartphone or computer, or comfortable reading in English or Spanish may find a phone call to 211 or an in-person navigator more useful than this tool.",
+  covEyebrow: "Educational estimate, not a determination",
+  covH2: "Where do you fall in Georgia's coverage picture?",
+  covLede: "Answer a few questions about your household. This tool uses the 2026 federal poverty guidelines and Georgia Pathways to Coverage rules to estimate your likely bucket — it can't see your actual case.",
+  lblSize: "Household size", hintSize: "Everyone you'd claim together on a Medicaid or Marketplace application.",
+  opt1p: "1 person", opt2p: "2 people", opt3p: "3 people", opt4p: "4 people", opt5p: "5 people", opt6p: "6 people", opt7p: "7 people", opt8p: "8 people",
+  opt9p: "9 people", opt10p: "10 people", opt11p: "11 people", opt12p: "12 people",
+  lblIncome: "Household gross annual income ($)", hintIncome: "Before taxes, combined for the household. If you know monthly income, multiply by 12.",
+  lblAge: "Your age",
+  legendHrs: "Do you already complete about 80 hours a month of work, school, job training, or a similar qualifying activity?",
+  yes: "Yes", no: "No", unsure: "Not sure",
+  chkPregnant: "I am currently pregnant",
+  chkParent: "I'm a parent or caretaker of a minor child who lives with me",
+  chkDisability: "I have a qualifying disability or receive SSI",
+  chkFrail: 'I have a serious medical condition that could qualify as "medically frail" (e.g., cancer, end-stage renal disease, sickle cell disease, or certain HIV-related diagnoses)',
+  chkCaregiver: "I'm a full-time unpaid caregiver for a family member (not a minor child)",
+  btnEstimate: "See my estimate",
+  covFootnote: 'Georgia Pathways received a federal extension only through December 31, 2026, and the state is seeking a longer renewal — rules can change. Always confirm through <a href="https://gateway.ga.gov" target="_blank" rel="noopener">Georgia Gateway</a> or by calling <strong>211</strong>.',
+  clinEyebrow: "Real, current directory",
+  clinH2: "Free and sliding-scale care in Georgia",
+  clinLede: "A working list of federally qualified health centers and free/charitable clinics that treat people regardless of insurance status. Call ahead — hours and sliding-scale documentation requirements change.",
+  clinSearchPh: "Search by name or service…",
+  areaAll: "All areas", areaGwinnett: "Gwinnett County", areaFulton: "Fulton / Atlanta metro", areaRural: "Rural west Georgia", areaState: "Statewide",
+  clinFootnote: 'This list isn\'t exhaustive. For the fullest, most current directory, use the federal <a href="https://findahealthcenter.hrsa.gov" target="_blank" rel="noopener">HRSA Find a Health Center</a> tool or call <strong>211</strong> (a free, confidential referral line; online directory at <a href="https://211online.unitedwayatlanta.org" target="_blank" rel="noopener">211online.unitedwayatlanta.org</a>) for a live referral near you.',
+  clinicEmpty: "No matches. Try clearing the search, or use the HRSA finder / 211 link below.",
+  moodEyebrow: "PHQ-9 — a standard screening tool",
+  moodH2: "How have you been feeling?",
+  moodLede: 'Over the <strong>last two weeks</strong>, how often have you been bothered by each of the following? This stays on your device only — nothing is sent anywhere unless you use the chat tab.',
+  moodNotice1: "This is a screening tool, not a diagnosis. A high score, or any trouble on the last question, is a good reason to talk to a real person — not something to sit with alone.",
+  btnMoodResults: "See my results",
+  moodHistoryH: "Your check-ins over time",
+  qOf: "Question {n} of {total}",
+  scaleNone: "Not at all", scaleSeveral: "Several days", scaleMore: "More than half the days", scaleNearly: "Nearly every day",
+  scoreOf: "out of 27",
+  bandMinimal: "Minimal", bandMild: "Mild", bandModerate: "Moderate", bandModSevere: "Moderately severe", bandSevere: "Severe",
+  bandMinimalDesc: "Your answers suggest minimal or no symptoms of depression over the last two weeks.",
+  bandMildDesc: "Your answers suggest mild symptoms. Keep an eye on how you're feeling, and consider mentioning it at your next checkup.",
+  bandModerateDesc: "Your answers suggest moderate symptoms. Talking with a doctor, counselor, or campus health service is a reasonable next step.",
+  bandModSevereDesc: "Your answers suggest moderately severe symptoms. It's worth reaching out to a professional relatively soon.",
+  bandSevereDesc: "Your answers suggest severe symptoms. Please consider reaching out to a professional soon — you don't have to carry this alone.",
+  q9WarnH: "Let's pause on that last question",
+  q9WarnP: "You indicated some thoughts of being better off dead or of hurting yourself, even if only on some days. That matters regardless of your total score. Please use the Crisis support resources at the top of this page, or reach out to someone you trust, right now.",
+  moodBottomNotice: "This is a screening tool, not a diagnosis — only a clinician can diagnose depression. If you're a student, campus counseling services and this app's clinic finder are both reasonable next steps.",
+  fillAllQ: "Please answer all 9 questions.",
+  chatLinkLede: "The chat is Claude, Anthropic's AI, and it opens in a new tab on claude.ai. It can explain Georgia coverage options and how to use this app. It does not diagnose, and it is not a substitute for Georgia Gateway, a clinic, or 211. Claude may ask you to sign in.",
+  chatLinkBtn: "Open the chat in a new tab",
+  chatLinkPrivacy: "What you type in the chat is handled by Claude, not by this site. Please don't enter your name, address, Social Security number or other personal details. In a crisis, use the Crisis support button or call or text 988.",
+  chatEyebrow: "A real conversation with Claude",
+  chatH2: "Ask GapCareGA about coverage or this app",
+  chatLede: "This is Claude (Anthropic's AI), not a scripted bot — ask it anything, not just questions about this app. It won't diagnose you, give medication guidance, or claim to know your exact eligibility, and it'll point you to crisis resources if things get serious.",
+  chatInputPh: "Type a question…",
+  btnSend: "Send",
+  chatWelcome: "Hi, I'm Claude. Ask me anything — Georgia coverage questions, how to use this app, or whatever else is on your mind. I won't diagnose or give medical advice, and for a crisis, please use the Crisis support button above.",
+  chatCrisisNote: "This sounds serious. Please use the Crisis support resources above, or reach out to someone you trust, right now.",
+  chatThinking: "Thinking…",
+  chatUnavailable: "Chat isn't available in this view right now. You can still use the Coverage gap check and Find a clinic tabs, or call 211.",
+  chatNoPermission: "I don't have permission to answer here. You can still use the other tabs, or call 211 for a live person.",
+  chatRateLimited: "Too many requests right now — try again in a moment.",
+  chatGenericError: "Something went wrong reaching the assistant. Try again, or use the other tabs.",
+  footer: "GapCareGA is an independent, informational resource and is not affiliated with the State of Georgia, the Georgia Department of Community Health, Medicaid, or any government agency. Coverage figures reflect published 2026 Georgia Pathways to Coverage rules and federal poverty guidelines; program rules can change, and this tool cannot see your actual case. Nothing here is medical, legal, or benefits-counseling advice.",
+  footerAbout: "About & Privacy",
+  footerUpdated: "Data last verified: September 2026",
+  printBtn: "Print / save this result",
+  aboutTitle: "About GapCareGA",
+  aboutIntro: "GapCareGA is an independent, non-commercial informational tool for people navigating Georgia's Medicaid coverage gap. It is not a government service, a law firm, a medical provider, or a benefits-counseling agency, and it does not have access to any government eligibility system or your personal records.",
+  aboutWhatH: "What this tool does",
+  aboutWhat: "It estimates where your household likely falls relative to Georgia Pathways to Coverage and ACA Marketplace subsidy ranges, lists real free and sliding-scale clinics, offers a standard PHQ-9 mood screening, and provides a bounded AI assistant for plain-language questions. All estimates are educational and general — only Georgia Gateway, a certified enrollment assister, or the Marketplace can tell you your actual eligibility.",
+  aboutDataH: "Data sources",
+  aboutData: "2026 HHS Federal Poverty Guidelines; Georgia Pathways to Coverage rules (pathways.georgia.gov); Georgia Gateway (gateway.ga.gov); healthcare.gov; and clinic information gathered from each organization's own public listings. Program rules change; always confirm specifics with the official source.",
+  aboutPrivacyH: "Your data",
+  aboutPrivacy: "Your mood check-in history is stored only in your own browser (localStorage) and is never transmitted anywhere. If you use the Ask GapCareGA chat, your messages are sent to Anthropic's Claude API to generate a response, the same way any AI chat works — nothing you type is saved by GapCareGA itself, and no account, tracking, or advertising is used on this site.",
+  aboutLimitsH: "Limitations",
+  aboutLimits: "This tool has not been reviewed by a licensed Georgia benefits counselor or a mental health clinician, and the clinic directory is a curated sample rather than a live, continuously updated feed. Treat every result as a starting point, not a final answer.",
+  aboutClose: "Close",
+  crisisTitle: "You don't have to handle this alone",
+  crisisSub: "These are free, confidential, and available right now.",
+  crisis1: "988 Suicide &amp; Crisis Lifeline — call or text, for suicidal thoughts, self-harm, or any mental health crisis. Available 24/7. Spanish-language support available.",
+  crisis2how: "Text HOME to 741741", crisis2: "Crisis Text Line — free, confidential text-based support, 24/7.",
+  crisis3: "Georgia Crisis &amp; Access Line (GCAL) — connects you to Georgia mental health, crisis, and substance use services, 24/7.",
+  crisis4: "SAMHSA National Helpline — free, confidential treatment referral and information service for mental health and substance use.",
+  crisis5how: "Call 911", crisis5: "If you or someone else is in immediate physical danger.",
+  verdictGoodPathways: "You likely qualify for Georgia Pathways to Coverage",
+  verdictGoodPathwaysBody: "Your income is within the 100% FPL limit, and you report meeting the ~80 hour/month qualifying-activity requirement. Apply through Georgia Gateway.",
+  verdictFrailAddendum: "Since you indicated a condition that may qualify as \"medically frail,\" you may be exempt from the 80-hour requirement (the exemption is listed in changes effective January 1, 2027, so confirm timing with Georgia Gateway) — note your condition on the Georgia Gateway application.",
+  verdictGapH: 'This is the profile the "coverage gap" describes',
+  verdictGapBody: "Your income qualifies for Pathways, but without the ~80 hour/month qualifying activity (work, school, job training, caregiving for a young child, or a treatment program, among others; some of these change on January 1, 2027) Pathways can't enroll you — and non-disabled adults without minor children generally aren't eligible for traditional Georgia Medicaid at any income. Community health centers' sliding-scale fees are usually the most realistic near-term option.",
+  verdictUnsureH: "Your income is within range — activity requirement is the open question",
+  verdictUnsureBody: "At this income you'd meet Pathways' 100% FPL ceiling. Whether you qualify depends on documenting about 80 hours a month of work, school, job training, or another accepted activity. Check the current qualifying-activity list at pathways.georgia.gov.",
+  verdictMidH: "Above Pathways\u2019 income limit — Marketplace subsidies likely apply",
+  verdictMidBody: "Your income is above Georgia Pathways\u2019 100% FPL ceiling. Base ACA premium tax credits still apply from 100–400% FPL in 2026, though the temporary enhanced subsidies expired at the end of 2025, so premiums are noticeably higher than in 2021–2025. Check plans at healthcare.gov.",
+  verdictMarketH: "You likely qualify for ACA Marketplace premium tax credits",
+  verdictMarketBody: "Your income falls in the 100–400% FPL range where base premium tax credits apply in 2026. Compare plans at healthcare.gov — sign-up windows and exact credit amounts depend on your county and plan choice.",
+  verdictCliffH: "Above 400% FPL — the 2026 subsidy cliff applies",
+  verdictCliffBody: "The enhanced subsidy cap that removed the 400% ceiling expired after 2025. Above 400% FPL you'd generally see full-price Marketplace premiums unless Congress changes this. Employer coverage, if available, is usually cheaper.",
+  estimatedAt: "Estimated at {pct}% of the 2026 federal poverty line for a household of {size} ({fpl} = 100% FPL for this size).",
+  enterIncomeH: "Enter a household income",
+  enterIncomeBody: "Add a gross annual income so this can estimate anything.",
+  otherCovH: "Other coverage you may hear about",
+  otherMedicare: "<strong>Medicare:</strong> for people 65 or older, and for some people under 65 who receive Social Security Disability benefits or have permanent kidney failure (end-stage renal disease). SSI alone does not qualify you. Sign up through the Social Security Administration (ssa.gov/medicare).",
+  otherCobra: "<strong>COBRA:</strong> if you lose job-based coverage (a layoff or reduced hours, for example), COBRA may let you keep your old employer plan, but you generally pay the full premium (up to 102% of the plan's cost). It mostly applies to employers with 20 or more workers. Before choosing it, compare it with Marketplace plans at healthcare.gov, which may cost less with a tax credit.",
+  otherShort: "<strong>Short-term health plans:</strong> these are cheaper but are not ACA coverage. They generally exclude pre-existing conditions, often skip maternity care, may cap what they pay or limit prescriptions, can't be bought on healthcare.gov, and can't use Marketplace tax credits. Read the exclusions closely, and compare with a Marketplace plan first.",
+  gapPlanH: "Your plan: what to do while you're in the coverage gap",
+  gapPlan: [
+    "<strong>1. See if you can reach Pathways.</strong> You need about 80 hours a month of work, school, job training, a treatment program, or caring for a child under 6, and the list can include other activities, so check pathways.georgia.gov. If you can, apply at gateway.ga.gov and keep proof such as pay stubs or a school schedule. Starting January 1, 2027, earning at least $580 a month will also count.",
+    "<strong>2. Ask about exemptions and other Medicaid routes.</strong> If you have a serious condition, a disability or SSI, are pregnant, or are a parent or caretaker of a minor child, tell Georgia Gateway. Those can open Medicaid through a different category, and the official page ties the medically frail exemption to the January 1, 2027 changes.",
+    "<strong>3. Get care now at a sliding-scale or free clinic.</strong> Use the Find a clinic tab. Several clinics there don't require insurance and set prices by income and family size. Bring photo ID, proof of address, and proof of income, since some clinics ask for them.",
+    "<strong>4. Call 211.</strong> It's a free, confidential referral line for food, utility, and prescription help, which can free up money for care.",
+    "<strong>5. Check again when anything changes.</strong> More hours, a new job, a pregnancy, a new diagnosis, or a change in income can change what you qualify for. Rerun the Coverage gap check.",
+    "<strong>6. Look after your mood.</strong> Use the Mood check-in to track how you're doing, and the Crisis support button has 988 and other numbers if things get hard.",
+    "<strong>If you are not a citizen or lawfully present:</strong> your options differ, and Pathways and most Medicaid are generally not open to you. Ask a local legal or immigrant services group before applying, and use the clinics and 211 above."
+  ],
+  noteUnder19: "<strong>Under 19:</strong> children are usually covered by Medicaid for Children or PeachCare for Kids at much higher income limits than adult categories — apply regardless of the estimate above.",
+  notePregnant: "<strong>Pregnancy:</strong> Georgia Medicaid covers pregnancy-related care at a higher income threshold than other adult categories, plus presumptive eligibility for fast temporary coverage while your full application processes. Apply regardless of the estimate above.",
+  noteDisability: "<strong>Disability / SSI:</strong> disability-linked Medicaid pathways use different income and asset rules than the ones estimated here. Apply through Georgia Gateway or your local DFCS office directly.",
+  noteFrail: "<strong>Medically frail:</strong> Under changes taking effect January 1, 2027, Georgia's official Pathways page lists people who are \"medically frail\" or have special medical needs as exempt from the 80-hour requirement; before then, ask Georgia Gateway how it applies to you. Some conditions (including cancer, end-stage renal disease, sickle cell disease, and certain HIV-related diagnoses) qualify automatically; others are reviewed case by case and may need medical documentation. Apply through Georgia Gateway and note your condition on the application.",
+  noteCaregiver: "<strong>Caregiving for an adult family member:</strong> unlike caregiving for a young child, Georgia currently has no work-requirement exemption for people caring for an adult relative (a spouse or parent, for example). Starting January 1, 2027, the state's official page lists family caregivers of a dependent child 13 or under, and of a disabled individual, as exempt, so ask Georgia Gateway whether your situation will qualify. If you don't otherwise meet the 80-hour requirement, a sliding-scale clinic is likely your most realistic near-term option; a \"good cause\" exemption exists for some circumstances but is time-limited and requires documentation, so it's worth asking Georgia Gateway whether it applies to you.",
+  noteParent: "<strong>Parent/caretaker:</strong> traditional Georgia Medicaid for parents and caretakers has a much lower income limit than Pathways (a fixed dollar amount that works out to roughly 26–36% of the federal poverty level, depending on household size). You may still qualify for Pathways or Marketplace subsidies at this income — let Georgia Gateway sort you into the right category.",
+  linkGateway: "Georgia Gateway — apply for Medicaid, Pathways, PeachCare, SNAP",
+  linkPathways: "pathways.georgia.gov — Pathways eligibility &amp; qualifying activities",
+  linkHealthcare: "healthcare.gov — ACA Marketplace plans and subsidies",
+  link211: "Call <strong>211</strong>, a free, confidential referral line, to talk with a live person who can point you to local help, or search the online directory at <a href=\"https://211online.unitedwayatlanta.org\" target=\"_blank\" rel=\"noopener\">211online.unitedwayatlanta.org</a>",
+  bestEyebrow: "Based on your coverage gap check",
+  bestH2: "Your best insurance option",
+  bestLede: "This turns your coverage gap check into a concrete next step. Complete the check first if you haven't already.",
+  bestEmptyTitle: "Complete the coverage gap check first",
+  bestEmptyBody: "This tab reads your answers from the Coverage gap check tab to recommend a concrete next step. You haven't run that check yet in this session.",
+  bestEmptyCta: "Go to Coverage gap check",
+  bestYourSituation: "Based on a household of {size} earning ${income} a year (about {pct}% of the federal poverty line), here's your best next step:",
+  bestStepsH: "What to do next",
+  bestWhy: "Why this is your best option",
+  bestRecheck: "Recheck with updated numbers",
+  stepsPathways: ["Apply for Georgia Pathways to Coverage through Georgia Gateway (gateway.ga.gov).", "Have proof of your ~80 hour/month qualifying activity ready — pay stubs, a school schedule, or a job-training enrollment letter.", "If you need care while your application processes, use a sliding-scale clinic from the Find a clinic tab."],
+  stepsGap: ["Traditional Medicaid and Pathways are unlikely to cover you right now — a free or sliding-scale clinic is the most realistic near-term option. Check the Find a clinic tab.", "If your situation changes (you pick up ~80 hours/month of work, school, or another qualifying activity), reapply for Pathways at gateway.ga.gov. Starting January 1, 2027, earning at least $580 a month (under 100% of the poverty level) can also count.", "Call 211 to check for other local assistance programs — food, utility, or prescription help can free up money for care."],
+  stepsUnsure: ["Check the current qualifying-activity list at pathways.georgia.gov to see if what you're already doing would count.", "Apply at gateway.ga.gov regardless of your certainty — Georgia Gateway makes the official determination, not this tool.", "Use a sliding-scale clinic in the meantime if you need care now."],
+  stepsMid: ["Compare ACA Marketplace plans at healthcare.gov — even with smaller subsidies now, a low-tier plan is usually far cheaper than paying out of pocket with no coverage.", "If you're pregnant, have a disability, or care for a minor child, ask Georgia Gateway whether a different Medicaid category fits — those use different income rules than Pathways.", "If premiums are still out of reach, sliding-scale clinics remain a fallback for routine and mental health care."],
+  stepsMarket: ["Compare ACA Marketplace plans at healthcare.gov during open enrollment, or a special enrollment period if you qualify for one.", "Look closely at Silver plans — cost-sharing reductions can lower your deductible and copays if your income qualifies.", "A certified enrollment assister can help you compare plans for free — find one through healthcare.gov."],
+  stepsCliff: ["Compare full-price ACA Marketplace plans at healthcare.gov — even without a subsidy, guaranteed-issue coverage may be worth it for major medical protection.", "Ask whether an employer plan, a spouse's plan, or a trade/association plan is available to you — these are often cheaper than full-price Marketplace coverage.", "If premiums are unaffordable, sliding-scale clinics can cover routine and mental health care in the meantime."],
+  refsEyebrow: "Sources, in APA 7th edition format",
+  refsH2: "References",
+  refsLede: "Every program rule, income figure, clinic listing, and screening instrument in this app is drawn from one of these sources.",
+  refsNote: "Per APA 7th edition, a reference beginning with a number (988 Suicide & Crisis Lifeline) is alphabetized as though the number were spelled out.",
+},
+es: {
+  brandTag: "una guía en lenguaje sencillo sobre cobertura de salud y acceso a atención en Georgia",
+  crisisBtn: "Ayuda en crisis",
+  tabHome: "Inicio", tabCoverage: "Verificar la brecha de cobertura", tabClinics: "Buscar una clínica",
+  tabMood: "Evaluación del ánimo", tabAdvocate: "Defiéndete", tabBest: "Mejor opción de seguro", tabChat: "Preguntar a GapCareGA", tabRefs: "Referencias",
+  advEyebrow: "Conocimiento y confianza para el consultorio",
+  advH2: "Defiéndete a ti mismo(a)",
+  advLede: "La investigación muestra que las mujeres, las personas de color, y las personas con historial de salud mental tienen más probabilidades de que sus síntomas sean minimizados o reatribuidos en lugar de investigados — un patrón que los investigadores llaman \"ensombrecimiento diagnóstico\". Conocer los términos y tener el lenguaje listo puede hacer más difícil que te ignoren.",
+  advMHTermsH: "Términos de salud mental, en lenguaje sencillo",
+  advMHTermsSub: "Estas son definiciones clínicas generales, no una forma de auto-diagnosticarte o diagnosticar a alguien más — solo un(a) clínico(a) licenciado(a) puede hacer eso. Si algo de esto te resulta familiar, vale la pena mencionarlo a un(a) proveedor(a), no decidirlo por tu cuenta.",
+  advJargonH: "Términos de clínicas y seguros",
+  advJargonSub: "El vocabulario que los proveedores y las aseguradoras usan todos los días, en lenguaje sencillo.",
+  advBeforeH: "Antes de la cita",
+  advDuringH: "Durante la cita",
+  advDismissedH: "Si sientes que te ignoran",
+  advDialogueH: "Cómo puede sonar esto",
+  advDialogueSub: "Un ejemplo breve. No tienes que sonar como un guion — esto solo muestra la idea general.",
+  homeEyebrow: "Para adultos sin seguro en la brecha de cobertura de Georgia",
+  homeH1: "La cobertura de salud es confusa a propósito. Esto no lo es.",
+  homeLede: "Georgia nunca expandió Medicaid por completo. Aproximadamente entre 180,000 y 200,000 adultos (ciudadanos de EE. UU. y residentes con presencia legal, según el Georgia Budget & Policy Institute) ganan demasiado para Medicaid tradicional pero muy poco para los ahorros completos del Mercado — atrapados en lo que se llama la brecha de cobertura. GapCareGA te ayuda a ver dónde te encuentras, a encontrar atención que puedas costear, y a evaluar cómo te sientes mientras resuelves esto.",
+  stat1: "de FPL es el límite de ingresos de Pathways to Coverage",
+  stat2num: "80 hrs", stat2: "de actividad calificada requeridas por mes",
+  stat3: "georgianos que se estima están en la brecha de cobertura",
+  homeNotice: "GapCareGA es una herramienta informativa independiente. Usa datos actuales de programas de Georgia (cifras de 2026) y un directorio curado de clínicas, pero no sustituye una determinación oficial de elegibilidad, un(a) asesor(a) certificado(a) de beneficios, ni atención médica o de salud mental profesional. No está afiliada al estado de Georgia ni a ninguna agencia gubernamental.",
+  nav1h: "Verificar la brecha de cobertura →", nav1p: "Ingresa el tamaño de tu hogar y tus ingresos para ver aproximadamente dónde te ubicas: Pathways, subsidios del Mercado, o la brecha misma.",
+  nav2h: "Buscar una clínica →", nav2p: "Busca clínicas reales gratuitas o de tarifa variable en Georgia, filtradas por área y servicio.",
+  nav3h: "Evaluación del ánimo →", nav3p: "Una evaluación estándar y privada de 9 preguntas (PHQ-9) que puedes seguir con el tiempo. Se queda en tu dispositivo.",
+  nav4h: "Preguntar a GapCareGA →", nav4p: "Un asistente limitado para preguntas en lenguaje sencillo sobre cobertura y esta app — no es un clínico.",
+  nav5h: "Defiéndete a ti mismo(a) →", nav5p: "Términos de salud mental y de seguros en lenguaje sencillo, además de guiones para citas médicas para que sea más difícil que te ignoren.",
+  homeAboutH: "Acerca de esta aplicación",
+  homeAboutP1: "GapCareGA es una aplicación web bilingüe creada para ayudar a adultos sin seguro en la brecha de cobertura de Medicaid de Georgia a entender sus opciones de cobertura de salud, encontrar atención asequible, y evaluar su salud mental. Está diseñada para los aproximadamente 180,000 a 200,000 georgianos (ciudadanos de EE. UU. y residentes con presencia legal, según el Georgia Budget &amp; Policy Institute) que ganan demasiado para Medicaid tradicional pero muy poco para los ahorros completos del Mercado de ACA — personas que a menudo no saben a qué puerta tocar primero.",
+  homeAboutP2: "La brecha de cobertura contribuye a diagnósticos tardíos, condiciones crónicas sin tratar, y peores resultados de salud mental, ya que las personas sin cobertura asequible a menudo omiten la atención preventiva y de rutina hasta que un problema se convierte en una emergencia. GapCareGA intenta acortar esa brecha señalando un próximo paso concreto en lugar de un laberinto de reglas de elegibilidad.",
+  homeAboutP3: "Lo que esta aplicación no puede hacer: no puede ver tu caso real, verificar tu elegibilidad, ni garantizar que una clínica o programa te acepte — cada estimación aquí es general, y solo Georgia Gateway, un(a) asesor(a) certificado(a) de inscripción, o un(a) proveedor(a) licenciado(a) puede darte una determinación real. Tampoco ha sido revisada todavía por un(a) asesor(a) de beneficios certificado(a) de Georgia ni por un(a) clínico(a) de salud mental.",
+  homeAboutP4: "Tampoco es adecuada para algunas de las personas que más necesitan ayuda con la cobertura. No modela las reglas de elegibilidad basadas en el estatus migratorio, por lo que los inmigrantes indocumentados y algunos inmigrantes con presencia legal que enfrentan distintos períodos de espera no obtendrán un panorama preciso de la verificación de la brecha de cobertura. Y como es una aplicación web con mucho texto, las personas sin acceso confiable a internet, un teléfono inteligente o una computadora, o sin comodidad leyendo en inglés o español, podrían encontrar más útil una llamada al 211 o un(a) asesor(a) en persona que esta herramienta.",
+  covEyebrow: "Estimación educativa, no una determinación",
+  covH2: "¿Dónde te ubicas en el panorama de cobertura de Georgia?",
+  covLede: "Responde algunas preguntas sobre tu hogar. Esta herramienta usa las pautas federales de pobreza de 2026 y las reglas de Georgia Pathways to Coverage para estimar tu categoría probable — no puede ver tu caso real.",
+  lblSize: "Tamaño del hogar", hintSize: "Todas las personas que incluirías juntas en una solicitud de Medicaid o del Mercado.",
+  opt1p: "1 persona", opt2p: "2 personas", opt3p: "3 personas", opt4p: "4 personas", opt5p: "5 personas", opt6p: "6 personas", opt7p: "7 personas", opt8p: "8 personas",
+  opt9p: "9 personas", opt10p: "10 personas", opt11p: "11 personas", opt12p: "12 personas",
+  lblIncome: "Ingreso bruto anual del hogar ($)", hintIncome: "Antes de impuestos, combinado para el hogar. Si conoces el ingreso mensual, multiplícalo por 12.",
+  lblAge: "Tu edad",
+  legendHrs: "¿Ya completas aproximadamente 80 horas al mes de trabajo, escuela, capacitación laboral, u otra actividad calificada similar?",
+  yes: "Sí", no: "No", unsure: "No estoy seguro/a",
+  chkPregnant: "Actualmente estoy embarazada",
+  chkParent: "Soy padre/madre o cuidador(a) de un menor de edad que vive conmigo",
+  chkDisability: "Tengo una discapacidad calificada o recibo SSI",
+  chkFrail: 'Tengo una condición médica seria que podría calificar como "médicamente frágil" (por ejemplo, cáncer, enfermedad renal en etapa terminal, anemia de células falciformes, o ciertos diagnósticos relacionados con el VIH)',
+  chkCaregiver: "Soy cuidador(a) no remunerado(a) de tiempo completo de un familiar (que no es un menor de edad)",
+  btnEstimate: "Ver mi estimación",
+  covFootnote: 'Georgia Pathways recibió una extensión federal solo hasta el 31 de diciembre de 2026, y el estado busca una renovación más larga — las reglas pueden cambiar. Siempre confirma a través de <a href="https://gateway.ga.gov" target="_blank" rel="noopener">Georgia Gateway</a> o llamando al <strong>211</strong>.',
+  clinEyebrow: "Directorio real y actual",
+  clinH2: "Atención gratuita y de tarifa variable en Georgia",
+  clinLede: "Una lista funcional de centros de salud federalmente calificados y clínicas gratuitas/benéficas que atienden a personas sin importar su estado de seguro. Llama antes de ir — los horarios y los requisitos de documentación para tarifa variable cambian.",
+  clinSearchPh: "Buscar por nombre o servicio…",
+  areaAll: "Todas las áreas", areaGwinnett: "Condado de Gwinnett", areaFulton: "Fulton / área metro de Atlanta", areaRural: "Oeste rural de Georgia", areaState: "Todo el estado",
+  clinFootnote: 'Esta lista no es exhaustiva. Para el directorio más completo y actual, usa la herramienta federal <a href="https://findahealthcenter.hrsa.gov" target="_blank" rel="noopener">HRSA Find a Health Center</a> o llama al <strong>211</strong> (una línea de referencia gratuita y confidencial; directorio en línea en <a href="https://211online.unitedwayatlanta.org" target="_blank" rel="noopener">211online.unitedwayatlanta.org</a>) para una referencia en vivo cerca de ti.',
+  clinicEmpty: "No hay coincidencias. Intenta borrar la búsqueda, o usa el buscador de HRSA / enlace de 211 abajo.",
+  moodEyebrow: "PHQ-9 — una herramienta de evaluación estándar",
+  moodH2: "¿Cómo te has estado sintiendo?",
+  moodLede: 'Durante las <strong>últimas 2 semanas</strong>, ¿qué tan seguido ha tenido molestias debido a los siguientes problemas? Esto se queda solo en tu dispositivo — no se envía a ningún lado a menos que uses la pestaña de chat.',
+  moodNotice1: "Esta es una herramienta de evaluación, no un diagnóstico. Un puntaje alto, o cualquier dificultad en la última pregunta, es una buena razón para hablar con una persona real — no algo para enfrentar solo/a.",
+  btnMoodResults: "Ver mis resultados",
+  moodHistoryH: "Tus evaluaciones a lo largo del tiempo",
+  qOf: "Pregunta {n} de {total}",
+  scaleNone: "Ningún día", scaleSeveral: "Varios días", scaleMore: "Más de la mitad de los días", scaleNearly: "Casi todos los días",
+  scoreOf: "de 27",
+  bandMinimal: "Mínimo", bandMild: "Leve", bandModerate: "Moderado", bandModSevere: "Moderadamente severo", bandSevere: "Severo",
+  bandMinimalDesc: "Tus respuestas sugieren síntomas mínimos o nulos de depresión durante las últimas dos semanas.",
+  bandMildDesc: "Tus respuestas sugieren síntomas leves. Presta atención a cómo te sientes y considera mencionarlo en tu próxima consulta médica.",
+  bandModerateDesc: "Tus respuestas sugieren síntomas moderados. Hablar con un médico, consejero, o servicio de salud del campus es un buen próximo paso.",
+  bandModSevereDesc: "Tus respuestas sugieren síntomas moderadamente severos. Vale la pena buscar ayuda profesional relativamente pronto.",
+  bandSevereDesc: "Tus respuestas sugieren síntomas severos. Por favor considera buscar ayuda profesional pronto — no tienes que cargar con esto solo/a.",
+  q9WarnH: "Detengámonos en esa última pregunta",
+  q9WarnP: "Indicaste algunos pensamientos de que estarías mejor muerto/a o de hacerte daño, aunque sea solo algunos días. Eso importa sin importar tu puntaje total. Por favor usa los recursos de Ayuda en crisis en la parte superior de esta página, o comunícate con alguien de confianza, ahora mismo.",
+  moodBottomNotice: "Esta es una herramienta de evaluación, no un diagnóstico — solo un clínico puede diagnosticar depresión. Si eres estudiante, los servicios de consejería del campus y el buscador de clínicas de esta app son ambos buenos próximos pasos.",
+  fillAllQ: "Por favor responde las 9 preguntas.",
+  chatLinkLede: "El chat es Claude, la IA de Anthropic, y se abre en una pestaña nueva en claude.ai. Puede explicar las opciones de cobertura en Georgia y cómo usar esta aplicación. No hace diagnósticos y no sustituye a Georgia Gateway, una clínica ni al 211. Es posible que Claude te pida iniciar sesión.",
+  chatLinkBtn: "Abrir el chat en una pestaña nueva",
+  chatLinkPrivacy: "Lo que escribas en el chat lo maneja Claude, no este sitio. Por favor no escribas tu nombre, dirección, número de Seguro Social ni otros datos personales. En una crisis, usa el botón de apoyo en crisis o llama o envía un mensaje de texto al 988.",
+  chatEyebrow: "Una conversación real con Claude",
+  chatH2: "Pregúntale a GapCareGA sobre cobertura o esta app",
+  chatLede: "Este es Claude (la IA de Anthropic), no un bot con guion — pregúntale lo que sea, no solo preguntas sobre esta app. No te diagnosticará, no te dará indicaciones de medicamentos, ni afirmará saber tu elegibilidad exacta, y te dirigirá a recursos de crisis si la situación se pone seria.",
+  chatInputPh: "Escribe una pregunta…",
+  btnSend: "Enviar",
+  chatWelcome: "Hola, soy Claude. Pregúntame lo que quieras — dudas sobre cobertura en Georgia, cómo usar esta app, o cualquier otra cosa. No diagnosticaré ni daré consejo médico, y para una crisis, por favor usa el botón de Ayuda en crisis arriba.",
+  chatCrisisNote: "Esto suena serio. Por favor usa los recursos de Ayuda en crisis de arriba, o comunícate con alguien de confianza, ahora mismo.",
+  chatThinking: "Pensando…",
+  chatUnavailable: "El chat no está disponible en esta vista en este momento. Aún puedes usar las pestañas de Verificar la brecha de cobertura y Buscar una clínica, o llamar al 211.",
+  chatNoPermission: "No tengo permiso para responder aquí. Aún puedes usar las otras pestañas, o llamar al 211 para hablar con una persona.",
+  chatRateLimited: "Demasiadas solicitudes en este momento — intenta de nuevo en un momento.",
+  chatGenericError: "Algo salió mal al contactar al asistente. Intenta de nuevo, o usa las otras pestañas.",
+  footer: "GapCareGA es un recurso informativo independiente y no está afiliado al estado de Georgia, al Departamento de Salud Comunitaria de Georgia, a Medicaid, ni a ninguna agencia gubernamental. Las cifras de cobertura reflejan las reglas publicadas de Georgia Pathways to Coverage 2026 y las pautas federales de pobreza; las reglas de los programas pueden cambiar, y esta herramienta no puede ver tu caso real. Nada de esto es consejo médico, legal, ni de asesoría de beneficios.",
+  footerAbout: "Acerca de y Privacidad",
+  footerUpdated: "Datos verificados por última vez: septiembre de 2026",
+  printBtn: "Imprimir / guardar este resultado",
+  aboutTitle: "Acerca de GapCareGA",
+  aboutIntro: "GapCareGA es una herramienta informativa independiente y sin fines de lucro para personas que navegan la brecha de cobertura de Medicaid en Georgia. No es un servicio gubernamental, un despacho legal, un proveedor médico, ni una agencia de asesoría de beneficios, y no tiene acceso a ningún sistema gubernamental de elegibilidad ni a tus registros personales.",
+  aboutWhatH: "Qué hace esta herramienta",
+  aboutWhat: "Estima dónde probablemente se ubica tu hogar respecto a Georgia Pathways to Coverage y los rangos de subsidios del Mercado de ACA, enumera clínicas reales gratuitas y de tarifa variable, ofrece una evaluación estándar del ánimo (PHQ-9), y provee un asistente de IA limitado para preguntas en lenguaje sencillo. Todas las estimaciones son educativas y generales — solo Georgia Gateway, un(a) asesor(a) certificado(a) de inscripción, o el Mercado pueden decirte tu elegibilidad real.",
+  aboutDataH: "Fuentes de datos",
+  aboutData: "Pautas federales de pobreza de HHS 2026; reglas de Georgia Pathways to Coverage (pathways.georgia.gov); Georgia Gateway (gateway.ga.gov); healthcare.gov; e información de clínicas recopilada de los listados públicos de cada organización. Las reglas de los programas cambian; siempre confirma los detalles con la fuente oficial.",
+  aboutPrivacyH: "Tus datos",
+  aboutPrivacy: "El historial de tu evaluación del ánimo se guarda solo en tu propio navegador (localStorage) y nunca se transmite a ningún lado. Si usas el chat de Preguntar a GapCareGA, tus mensajes se envían a la API de Claude de Anthropic para generar una respuesta, tal como funciona cualquier chat de IA — nada de lo que escribes es guardado por GapCareGA, y este sitio no usa cuentas, rastreo, ni publicidad.",
+  aboutLimitsH: "Limitaciones",
+  aboutLimits: "Esta herramienta no ha sido revisada por un(a) asesor(a) de beneficios certificado(a) de Georgia ni por un(a) clínico(a) de salud mental, y el directorio de clínicas es una muestra curada, no un feed en vivo y continuamente actualizado. Trata cada resultado como un punto de partida, no como una respuesta final.",
+  aboutClose: "Cerrar",
+  crisisTitle: "No tienes que enfrentar esto solo/a",
+  crisisSub: "Estos son gratuitos, confidenciales, y están disponibles ahora mismo.",
+  crisis1: "988 Línea de Suicidio y Crisis — llama o envía un mensaje de texto, para pensamientos suicidas, autolesión, o cualquier crisis de salud mental. Disponible 24/7. Apoyo en español disponible.",
+  crisis2how: "Envía HOME al 741741", crisis2: "Crisis Text Line — apoyo confidencial gratuito por mensaje de texto, 24/7 (en inglés; escribe HOLA para español).",
+  crisis3: "Línea de Crisis y Acceso de Georgia (GCAL) — te conecta con servicios de salud mental, crisis, y uso de sustancias de Georgia, 24/7.",
+  crisis4: "Línea Nacional de Ayuda de SAMHSA — servicio confidencial y gratuito de referencia e información sobre tratamiento para salud mental y uso de sustancias, con opción en español.",
+  crisis5how: "Llama al 911", crisis5: "Si tú u otra persona está en peligro físico inmediato.",
+  verdictGoodPathways: "Probablemente calificas para Georgia Pathways to Coverage",
+  verdictGoodPathwaysBody: "Tu ingreso está dentro del límite del 100% de FPL, y reportas cumplir con el requisito de ~80 horas/mes de actividad calificada. Solicita a través de Georgia Gateway.",
+  verdictFrailAddendum: "Como indicaste una condición que podría calificar como \"médicamente frágil\", es posible que estés exento(a) del requisito de 80 horas (la exención aparece en los cambios que entran en vigor el 1 de enero de 2027; confirma las fechas con Georgia Gateway) — menciona tu condición en la solicitud de Georgia Gateway.",
+  verdictGapH: 'Este es el perfil que describe la "brecha de cobertura"',
+  verdictGapBody: "Tu ingreso califica para Pathways, pero sin las ~80 horas/mes de actividad calificada (trabajo, escuela, capacitación laboral, cuidado de un niño pequeño, o un programa de tratamiento, entre otros; algunos cambian el 1 de enero de 2027) Pathways no puede inscribirte — y los adultos sin discapacidad y sin hijos menores generalmente no son elegibles para Medicaid tradicional de Georgia sin importar el ingreso. Las tarifas variables de los centros de salud comunitarios suelen ser la opción más realista a corto plazo.",
+  verdictUnsureH: "Tu ingreso está en rango — el requisito de actividad es la pregunta abierta",
+  verdictUnsureBody: "Con este ingreso cumplirías con el límite del 100% de FPL de Pathways. Si calificas depende de documentar aproximadamente 80 horas al mes de trabajo, escuela, capacitación laboral, u otra actividad aceptada. Revisa la lista actual de actividades calificadas en pathways.georgia.gov.",
+  verdictMidH: "Por encima del límite de ingresos de Pathways — probablemente apliquen los subsidios del Mercado",
+  verdictMidBody: "Tu ingreso está por encima del límite del 100% de FPL de Georgia Pathways. Los créditos fiscales base de ACA aún aplican del 100% al 400% de FPL en 2026, aunque los subsidios mejorados temporales expiraron a fines de 2025, por lo que las primas son notablemente más altas que entre 2021 y 2025. Revisa planes en healthcare.gov.",
+  verdictMarketH: "Probablemente calificas para los créditos fiscales del Mercado de ACA",
+  verdictMarketBody: "Tu ingreso cae en el rango del 100% al 400% de FPL donde aplican los créditos fiscales base en 2026. Compara planes en healthcare.gov — los períodos de inscripción y los montos exactos del crédito dependen de tu condado y del plan elegido.",
+  verdictCliffH: "Por encima del 400% de FPL — aplica el precipicio de subsidios de 2026",
+  verdictCliffBody: "El límite de subsidio mejorado que eliminó el techo del 400% expiró después de 2025. Por encima del 400% de FPL generalmente verías primas de precio completo en el Mercado a menos que el Congreso cambie esto. La cobertura del empleador, si está disponible, suele ser más económica.",
+  estimatedAt: "Estimado en {pct}% de la línea federal de pobreza de 2026 para un hogar de {size} ({fpl} = 100% de FPL para este tamaño).",
+  enterIncomeH: "Ingresa un ingreso del hogar",
+  enterIncomeBody: "Agrega un ingreso bruto anual para que esto pueda estimar algo.",
+  otherCovH: "Otra cobertura de la que podrías oír hablar",
+  otherMedicare: "<strong>Medicare:</strong> para personas de 65 años o más, y para algunas personas menores de 65 que reciben beneficios por discapacidad del Seguro Social o tienen insuficiencia renal permanente (enfermedad renal en etapa terminal). El SSI por sí solo no califica. Inscríbete a través de la Administración del Seguro Social (ssa.gov/medicare).",
+  otherCobra: "<strong>COBRA:</strong> si pierdes la cobertura de tu trabajo (por un despido o reducción de horas, por ejemplo), COBRA puede permitirte conservar el plan de tu antiguo empleador, pero generalmente pagas la prima completa (hasta el 102% del costo del plan). Aplica principalmente a empleadores con 20 o más trabajadores. Antes de elegirlo, compáralo con los planes del Mercado en healthcare.gov, que podrían costar menos con un crédito fiscal.",
+  otherShort: "<strong>Planes de salud a corto plazo:</strong> son más baratos pero no son cobertura de ACA. Generalmente excluyen condiciones preexistentes, a menudo no cubren la maternidad, pueden limitar lo que pagan o los medicamentos, no se pueden comprar en healthcare.gov y no pueden usar los créditos fiscales del Mercado. Lee bien las exclusiones y compara primero con un plan del Mercado.",
+  gapPlanH: "Tu plan: qué hacer mientras estás en la brecha de cobertura",
+  gapPlan: [
+    "<strong>1. Revisa si puedes llegar a Pathways.</strong> Necesitas unas 80 horas al mes de trabajo, escuela, capacitación laboral, un programa de tratamiento, o el cuidado de un niño menor de 6 años; la lista puede incluir otras actividades, así que revisa pathways.georgia.gov. Si puedes, solicita en gateway.ga.gov y guarda comprobantes como recibos de pago o un horario escolar. A partir del 1 de enero de 2027, ganar al menos $580 al mes también contará.",
+    "<strong>2. Pregunta por exenciones y otras vías de Medicaid.</strong> Si tienes una condición médica seria, una discapacidad o SSI, estás embarazada, o eres padre/madre o cuidador(a) de un menor, díselo a Georgia Gateway. Eso puede abrir Medicaid por otra categoría, y la página oficial vincula la exención por \"médicamente frágil\" con los cambios del 1 de enero de 2027.",
+    "<strong>3. Recibe atención ahora en una clínica gratuita o de tarifa variable.</strong> Usa la pestaña Buscar una clínica. Varias no exigen seguro y fijan los precios según tu ingreso y el tamaño de tu familia. Lleva identificación con foto, comprobante de domicilio y comprobante de ingresos, porque algunas clínicas los piden.",
+    "<strong>4. Llama al 211.</strong> Es una línea de referencia gratuita y confidencial para ayuda con comida, servicios públicos y medicamentos, lo que puede liberar dinero para tu atención.",
+    "<strong>5. Vuelve a verificar cuando algo cambie.</strong> Más horas, un trabajo nuevo, un embarazo, un diagnóstico nuevo o un cambio de ingresos pueden cambiar lo que calificas. Repite la verificación de la brecha de cobertura.",
+    "<strong>6. Cuida tu estado de ánimo.</strong> Usa la pestaña Evaluación del ánimo para ver cómo te sientes, y el botón de apoyo en crisis tiene el 988 y otros números si las cosas se ponen difíciles.",
+    "<strong>Si no eres ciudadano(a) ni tienes presencia legal:</strong> tus opciones son distintas, y Pathways y la mayor parte de Medicaid generalmente no están abiertos para ti. Consulta con un grupo local de servicios legales o para inmigrantes antes de solicitar, y usa las clínicas y el 211 mencionados arriba."
+  ],
+  noteUnder19: "<strong>Menor de 19 años:</strong> los niños generalmente están cubiertos por Medicaid para Niños o PeachCare for Kids con límites de ingreso mucho más altos que las categorías de adultos — solicita sin importar la estimación anterior.",
+  notePregnant: "<strong>Embarazo:</strong> Medicaid de Georgia cubre atención relacionada con el embarazo con un umbral de ingreso más alto que otras categorías de adultos, además de elegibilidad presuntiva para cobertura temporal rápida mientras se procesa tu solicitud completa. Solicita sin importar la estimación anterior.",
+  noteDisability: "<strong>Discapacidad / SSI:</strong> las vías de Medicaid vinculadas a discapacidad usan reglas de ingreso y activos diferentes a las estimadas aquí. Solicita a través de Georgia Gateway o tu oficina local de DFCS directamente.",
+  noteFrail: "<strong>Médicamente frágil:</strong> Según los cambios que entran en vigor el 1 de enero de 2027, la página oficial de Pathways lista como exentas del requisito de 80 horas a las personas \"médicamente frágiles\" o con necesidades médicas especiales; antes de esa fecha, pregunta a Georgia Gateway cómo aplica en tu caso. Algunas condiciones (incluyendo cáncer, enfermedad renal en etapa terminal, anemia de células falciformes, y ciertos diagnósticos relacionados con el VIH) califican automáticamente; otras se revisan caso por caso y podrían requerir documentación médica. Solicita a través de Georgia Gateway y menciona tu condición en la solicitud.",
+  noteCaregiver: "<strong>Cuidado de un familiar adulto:</strong> a diferencia del cuidado de un niño pequeño, Georgia actualmente no tiene ninguna exención del requisito de trabajo para personas que cuidan a un familiar adulto (un cónyuge o padre/madre, por ejemplo). A partir del 1 de enero de 2027, la página oficial del estado lista como exentos a los cuidadores familiares de un menor dependiente de 13 años o menos y de una persona con discapacidad; pregunta a Georgia Gateway si tu situación calificará. Si no cumples de otra forma con el requisito de 80 horas, una clínica de tarifa variable probablemente sea tu opción más realista a corto plazo; existe una exención por \"causa justificada\" para algunas circunstancias, pero es limitada en el tiempo y requiere documentación, así que vale la pena preguntarle a Georgia Gateway si aplica en tu caso.",
+  noteParent: "<strong>Padre/madre o cuidador(a):</strong> el Medicaid tradicional de Georgia para padres y cuidadores tiene un límite de ingreso mucho más bajo que Pathways (una cantidad fija en dólares que equivale aproximadamente al 26–36% del nivel federal de pobreza, según el tamaño del hogar). Aún podrías calificar para Pathways o subsidios del Mercado con este ingreso — deja que Georgia Gateway te ubique en la categoría correcta.",
+  linkGateway: "Georgia Gateway — solicita Medicaid, Pathways, PeachCare, SNAP",
+  linkPathways: "pathways.georgia.gov — elegibilidad de Pathways y actividades calificadas",
+  linkHealthcare: "healthcare.gov — planes y subsidios del Mercado de ACA",
+  link211: "Llama al <strong>211</strong>, una línea de referencia gratuita y confidencial, para hablar con una persona en vivo que te oriente hacia ayuda local, o busca en el directorio en línea: <a href=\"https://211online.unitedwayatlanta.org\" target=\"_blank\" rel=\"noopener\">211online.unitedwayatlanta.org</a>",
+  bestEyebrow: "Basado en tu verificación de la brecha de cobertura",
+  bestH2: "Tu mejor opción de seguro",
+  bestLede: "Esto convierte tu verificación de la brecha de cobertura en un próximo paso concreto. Completa la verificación primero si aún no lo has hecho.",
+  bestEmptyTitle: "Primero completa la verificación de la brecha de cobertura",
+  bestEmptyBody: "Esta pestaña usa tus respuestas de la pestaña Verificar la brecha de cobertura para recomendarte un próximo paso concreto. Aún no has hecho esa verificación en esta sesión.",
+  bestEmptyCta: "Ir a Verificar la brecha de cobertura",
+  bestYourSituation: "Con base en un hogar de {size} personas que gana ${income} al año (aproximadamente {pct}% de la línea federal de pobreza), este es tu próximo paso:",
+  bestStepsH: "Qué hacer a continuación",
+  bestWhy: "Por qué esta es tu mejor opción",
+  bestRecheck: "Vuelve a verificar con cifras actualizadas",
+  stepsPathways: ["Solicita Georgia Pathways to Coverage a través de Georgia Gateway (gateway.ga.gov).", "Ten a la mano comprobante de tus ~80 horas/mes de actividad calificada — recibos de pago, un horario escolar, o una carta de inscripción a capacitación laboral.", "Si necesitas atención mientras se procesa tu solicitud, usa una clínica de tarifa variable de la pestaña Buscar una clínica."],
+  stepsGap: ["Es poco probable que Medicaid tradicional o Pathways te cubran en este momento — una clínica gratuita o de tarifa variable es la opción más realista a corto plazo. Revisa la pestaña Buscar una clínica.", "Si tu situación cambia (comienzas ~80 horas/mes de trabajo, escuela, u otra actividad calificada), vuelve a solicitar Pathways en gateway.ga.gov. A partir del 1 de enero de 2027, ganar al menos $580 al mes (por debajo del 100% del nivel de pobreza) también puede contar.", "Llama al 211 para conocer otros programas de asistencia local — ayuda con comida, servicios públicos, o medicamentos puede liberar dinero para atención médica."],
+  stepsUnsure: ["Revisa la lista actual de actividades calificadas en pathways.georgia.gov para ver si lo que ya haces contaría.", "Solicita en gateway.ga.gov sin importar tu incertidumbre — Georgia Gateway hace la determinación oficial, no esta herramienta.", "Usa una clínica de tarifa variable mientras tanto si necesitas atención ahora."],
+  stepsMid: ["Compara planes del Mercado de ACA en healthcare.gov — incluso con subsidios más pequeños ahora, un plan de nivel bajo suele ser mucho más económico que pagar todo de tu bolsillo sin cobertura.", "Si estás embarazada, tienes una discapacidad, o cuidas a un menor de edad, pregúntale a Georgia Gateway si otra categoría de Medicaid te queda mejor — esas usan reglas de ingreso distintas a las de Pathways.", "Si las primas siguen siendo inalcanzables, las clínicas de tarifa variable siguen siendo una opción de respaldo para atención de rutina y de salud mental."],
+  stepsMarket: ["Compara planes del Mercado de ACA en healthcare.gov durante la inscripción abierta, o un período de inscripción especial si calificas para uno.", "Revisa con atención los planes Silver — las reducciones de costos compartidos pueden bajar tu deducible y copagos si tu ingreso califica.", "Un(a) asesor(a) certificado(a) de inscripción puede ayudarte a comparar planes gratis — encuentra uno a través de healthcare.gov."],
+  stepsCliff: ["Compara planes del Mercado de ACA a precio completo en healthcare.gov — incluso sin un subsidio, la cobertura de emisión garantizada puede valer la pena para protección médica mayor.", "Pregunta si tienes disponible un plan del empleador, el plan de tu cónyuge, o un plan de un gremio/asociación — estos suelen ser más económicos que la cobertura del Mercado a precio completo.", "Si las primas son inasequibles, las clínicas de tarifa variable pueden cubrir atención de rutina y de salud mental mientras tanto."],
+  refsEyebrow: "Fuentes, en formato APA 7ª edición",
+  refsH2: "Referencias",
+  refsLede: "Cada regla de programa, cifra de ingreso, listado de clínica, e instrumento de evaluación en esta aplicación proviene de una de estas fuentes.",
+  refsNote: "Según la 7ª edición de APA, una referencia que comienza con un número (988 Suicide & Crisis Lifeline) se alfabetiza como si el número estuviera escrito con letras.",
+}
+};
+
+let lang = (function(){
+  try {
+    const stored = localStorage.getItem('gapcarega_lang');
+    if(stored) return stored;
+  } catch(e){}
+  // No saved preference yet: default to Spanish if the browser is set to Spanish, else English.
+  const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  return nav.startsWith('es') ? 'es' : 'en';
+})();
+
+function tr(key){ return (T[lang] && T[lang][key] !== undefined) ? T[lang][key] : (T.en[key] || ''); }
+function fmt(str, vals){ return str.replace(/\{(\w+)\}/g, (m,k)=> (vals[k] !== undefined ? vals[k] : m)); }
+
+function applyTranslations(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const key = el.getAttribute('data-t');
+    const val = tr(key);
+    if(val.indexOf('<') !== -1) el.innerHTML = val; else el.textContent = val;
+  });
+  document.querySelectorAll('[data-t-placeholder]').forEach(el=>{
+    el.placeholder = tr(el.getAttribute('data-t-placeholder'));
+    el.setAttribute('aria-label', el.placeholder);
+  });
+  { const ar=document.getElementById('clinic-area'); if(ar) ar.setAttribute('aria-label', lang==='es' ? 'Filtrar por área' : 'Filter by area'); }
+  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+  document.getElementById('lang-en').setAttribute('aria-pressed', lang === 'en');
+  document.getElementById('lang-es').setAttribute('aria-pressed', lang === 'es');
+  renderPhqForm();
+  renderClinics();
+  renderMoodHistory();
+  renderBestOption();
+  renderAdvocate();
+}
+
+function setLang(l){
+  lang = l;
+  try { localStorage.setItem('gapcarega_lang', l); } catch(e){}
+  applyTranslations();
+}
+
+/* ============ TAB NAV ============ */
+function showTab(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-selected','false'); b.setAttribute('tabindex','-1'); });
+  document.getElementById('panel-'+name).classList.add('active');
+  const btn = document.querySelector('.tab-btn[data-tab="'+name+'"]');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+  btn.setAttribute('tabindex','0');
+  document.title = btn.textContent.trim() + ' | GapCareGA';
+  if(name === 'best' && typeof renderBestOption === 'function') renderBestOption();
+  window.scrollTo({top:0, behavior:'auto'});
+}
+document.getElementById('tabs').addEventListener('keydown', e=>{
+  const keys = ['ArrowRight','ArrowLeft','Home','End'];
+  if(!keys.includes(e.key)) return;
+  const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+  let i = tabs.indexOf(document.activeElement);
+  if(i < 0) return;
+  if(e.key==='ArrowRight') i = (i+1)%tabs.length;
+  else if(e.key==='ArrowLeft') i = (i-1+tabs.length)%tabs.length;
+  else if(e.key==='Home') i = 0; else i = tabs.length-1;
+  e.preventDefault();
+  showTab(tabs[i].dataset.tab);
+  tabs[i].focus();
+});
+document.getElementById('tabs').addEventListener('click', e=>{
+  const btn = e.target.closest('.tab-btn');
+  if(btn) showTab(btn.dataset.tab);
+});
+
+/* ============ CRISIS MODAL ============ */
+let lastFocusEl = null;
+function openModalEl(id){
+  lastFocusEl = document.activeElement;
+  document.getElementById(id).classList.add('open');
+  document.getElementById('main-content').setAttribute('aria-hidden','true');
+  const closeBtn = document.querySelector('#'+id+' .modal-close');
+  if(closeBtn) closeBtn.focus();
+}
+function closeModalEl(id){
+  const el = document.getElementById(id);
+  if(!el.classList.contains('open')) return;
+  el.classList.remove('open');
+  document.getElementById('main-content').removeAttribute('aria-hidden');
+  if(lastFocusEl && document.contains(lastFocusEl)) lastFocusEl.focus();
+}
+function openCrisisModal(){ openModalEl('crisis-modal'); }
+function closeCrisisModal(){ closeModalEl('crisis-modal'); }
+document.getElementById('crisis-modal').addEventListener('click', e=>{
+  if(e.target.id === 'crisis-modal') closeCrisisModal();
+});
+
+/* ============ ABOUT / PRIVACY MODAL ============ */
+function openAboutModal(){ openModalEl('about-modal'); }
+function closeAboutModal(){ closeModalEl('about-modal'); }
+document.getElementById('about-modal').addEventListener('click', e=>{
+  if(e.target.id === 'about-modal') closeAboutModal();
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Tab'){
+    const open = document.querySelector('.modal-backdrop.open');
+    if(open){
+      const f = Array.from(open.querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(x=>!x.disabled);
+      if(f.length){
+        const first=f[0], last=f[f.length-1];
+        if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+        else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+        else if(!open.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+      }
+    }
+  }
+  if(e.key === 'Escape'){
+    closeCrisisModal();
+    closeAboutModal();
+  }
+});
+
+/* ============ COVERAGE GAP CHECK ============ */
+function fplForSize(size){
+  // 2026 HHS Federal Poverty Guidelines, 48 contiguous states + DC: base (household of 1) + $5,680 per additional person
+  const base = 15960;
+  const step = 5680;
+  return base + (size - 1) * step;
+}
+
+function runCoverageCheck(){
+  const size = parseInt(document.getElementById('hh-size').value, 10);
+  const income = parseFloat(document.getElementById('hh-income').value);
+  const age = parseFloat(document.getElementById('hh-age').value);
+  const hrs = (document.querySelector('input[name="hrs"]:checked') || {}).value || 'unsure';
+  const pregnant = document.getElementById('hh-pregnant').checked;
+  const parent = document.getElementById('hh-parent').checked;
+  const disability = document.getElementById('hh-disability').checked;
+  const frail = document.getElementById('hh-frail').checked;
+  const caregiver = document.getElementById('hh-caregiver').checked;
+
+  const box = document.getElementById('coverage-result');
+  box.style.display = 'block';
+
+  if(isNaN(income) || income < 0){
+    box.innerHTML = '<div class="verdict warn"><h3>'+tr('enterIncomeH')+'</h3><p>'+tr('enterIncomeBody')+'</p></div>';
+    return;
+  }
+
+  const fpl = fplForSize(size);
+  const pct = (income / fpl) * 100;
+  const pctDisplay = Math.round(pct);
+
+  let verdictClass = 'mid';
+  let heading = '';
+  let body = '';
+  let verdictKey = 'unsure';
+
+  if(pct <= 100){
+    if(hrs === 'yes' || frail){
+      verdictClass = 'good';
+      heading = tr('verdictGoodPathways');
+      body = frail ? tr('verdictGoodPathwaysBody') + ' ' + tr('verdictFrailAddendum') : tr('verdictGoodPathwaysBody');
+      verdictKey = 'pathways';
+    } else if(hrs === 'no'){
+      verdictClass = 'warn';
+      heading = tr('verdictGapH');
+      body = tr('verdictGapBody');
+      verdictKey = 'gap';
+    } else {
+      verdictClass = 'mid';
+      heading = tr('verdictUnsureH');
+      body = tr('verdictUnsureBody');
+      verdictKey = 'unsure';
+    }
+  } else if(pct <= 138){
+    verdictClass = 'mid';
+    heading = tr('verdictMidH');
+    body = tr('verdictMidBody');
+    verdictKey = 'mid';
+  } else if(pct <= 400){
+    verdictClass = 'good';
+    heading = tr('verdictMarketH');
+    body = tr('verdictMarketBody');
+    verdictKey = 'market';
+  } else {
+    verdictClass = 'warn';
+    heading = tr('verdictCliffH');
+    body = tr('verdictCliffBody');
+    verdictKey = 'cliff';
+  }
+
+  let html = '<div class="verdict '+verdictClass+'"><h3>'+heading+'</h3><p>'+body+'</p></div>';
+  html += '<p style="font-size:.875rem;color:var(--ink-faint);margin-top:2px;">'+fmt(tr('estimatedAt'), {pct: pctDisplay, size: size, fpl: fpl.toLocaleString()})+'</p>';
+
+  const notes = [];
+  if(age && age < 19){ notes.push('<li>'+tr('noteUnder19')+'</li>'); }
+  if(pregnant){ notes.push('<li>'+tr('notePregnant')+'</li>'); }
+  if(disability){ notes.push('<li>'+tr('noteDisability')+'</li>'); }
+  if(frail){ notes.push('<li>'+tr('noteFrail')+'</li>'); }
+  if(caregiver){ notes.push('<li>'+tr('noteCaregiver')+'</li>'); }
+  if(parent){ notes.push('<li>'+tr('noteParent')+'</li>'); }
+  if(notes.length){ html += '<ul class="note-list">'+notes.join('')+'</ul>'; }
+
+  html += '<ul class="link-list">'
+    + '<li>→ <a href="https://gateway.ga.gov" target="_blank" rel="noopener">'+tr('linkGateway')+'</a></li>'
+    + '<li>→ <a href="https://pathways.georgia.gov" target="_blank" rel="noopener">'+tr('linkPathways')+'</a></li>'
+    + '<li>→ <a href="https://www.healthcare.gov" target="_blank" rel="noopener">'+tr('linkHealthcare')+'</a></li>'
+    + '<li>→ '+tr('link211')+'</li>'
+    + '</ul>';
+  html += '<button class="btn" style="margin-top:18px;" onclick="window.print()">'+tr('printBtn')+'</button>';
+
+  box.innerHTML = html;
+
+  lastCoverageResult = { verdictKey, verdictClass, heading, body, size, income, pct, pctDisplay, fpl, age, hrs, pregnant, parent, disability, frail, caregiver };
+  renderBestOption();
+}
+
+/* ============ BEST INSURANCE OPTION (derived from the coverage gap check) ============ */
+let lastCoverageResult = null;
+
+function renderBestOption(){
+  const el = document.getElementById('best-content');
+  if(!el) return;
+  if(!lastCoverageResult){
+    el.innerHTML = '<div class="notice">'
+      + '<strong>'+tr('bestEmptyTitle')+'</strong><br>'+tr('bestEmptyBody')
+      + '</div>'
+      + '<button class="btn" onclick="showTab(\'coverage\')">'+tr('bestEmptyCta')+'</button>';
+    return;
+  }
+  const r = lastCoverageResult;
+  const stepsKeyMap = { pathways:'stepsPathways', gap:'stepsGap', unsure:'stepsUnsure', mid:'stepsMid', market:'stepsMarket', cliff:'stepsCliff' };
+  const steps = T[lang][stepsKeyMap[r.verdictKey]] || T.en[stepsKeyMap[r.verdictKey]] || [];
+
+  let html = '<p style="font-size:.92rem;">'+fmt(tr('bestYourSituation'), {size:r.size, income:Math.round(r.income).toLocaleString(), pct:r.pctDisplay})+'</p>';
+  html += '<div class="verdict '+r.verdictClass+'"><h3>'+r.heading+'</h3><p>'+r.body+'</p></div>';
+  if(r.verdictKey === 'gap'){
+    html += '<h3 style="font-size:1.1rem;margin-top:22px;">'+tr('gapPlanH')+'</h3>';
+    html += '<ul class="note-list">' + tr('gapPlan').map(s=>'<li>'+s+'</li>').join('') + '</ul>';
+  } else {
+    html += '<h3 style="font-size:1rem;margin-top:22px;">'+tr('bestStepsH')+'</h3>';
+    html += '<ol style="padding-left:20px;">' + steps.map(s=>'<li style="margin-bottom:10px;font-size:.92rem;color:var(--ink-soft);">'+s+'</li>').join('') + '</ol>';
+  }
+
+  const notes = [];
+  if(r.age && r.age < 19){ notes.push('<li>'+tr('noteUnder19')+'</li>'); }
+  if(r.pregnant){ notes.push('<li>'+tr('notePregnant')+'</li>'); }
+  if(r.disability){ notes.push('<li>'+tr('noteDisability')+'</li>'); }
+  if(r.frail){ notes.push('<li>'+tr('noteFrail')+'</li>'); }
+  if(r.caregiver){ notes.push('<li>'+tr('noteCaregiver')+'</li>'); }
+  if(r.parent){ notes.push('<li>'+tr('noteParent')+'</li>'); }
+  if(notes.length){ html += '<ul class="note-list">'+notes.join('')+'</ul>'; }
+
+  html += '<h3 style="font-size:1rem;margin-top:26px;">'+tr('otherCovH')+'</h3><ul class="note-list"><li>'+tr('otherMedicare')+'</li><li>'+tr('otherCobra')+'</li><li>'+tr('otherShort')+'</li></ul>';
+
+  html += '<button class="btn" style="margin-top:6px;" onclick="showTab(\'coverage\')">'+tr('bestRecheck')+'</button>';
+  html += ' <button class="btn" style="margin-top:6px;background:transparent;color:var(--primary);border:1px solid var(--primary);" onclick="window.print()">'+tr('printBtn')+'</button>';
+
+  el.innerHTML = html;
+}
+
+/* ============ CLINIC DIRECTORY (real, current listings; bilingual service tags/notes) ============ */
+const CLINICS = [
+  {
+    name: 'Good Samaritan Health Center — West Gwinnett',
+    area: 'Gwinnett',
+    address: '5949 Buford Hwy, Norcross, GA 30071',
+    phone: '(678) 280-6630',
+    servicesKeys: ['svcMedical','svcDental','svcSliding','svcUninsured'],
+    note: { en: 'Appointment required; walk-ins as schedule allows. Bring photo ID, proof of address, and proof of income.',
+            es: 'Se requiere cita; se aceptan pacientes sin cita según disponibilidad. Trae identificación con foto, comprobante de domicilio, y comprobante de ingresos.' }
+  },
+  {
+    name: 'Good Samaritan Health Center — East Gwinnett',
+    area: 'Gwinnett',
+    address: '1175 Commercial Ct, Norcross, GA 30093',
+    phone: '(678) 806-0162',
+    servicesKeys: ['svcDental','svcSTI','svcSliding'],
+    note: { en: 'Same network as West Gwinnett location; open one Saturday a month.',
+            es: 'Misma red que la ubicación de West Gwinnett; abierto un sábado al mes.' }
+  },
+  {
+    name: 'Mercy Care — Decatur Street Clinic',
+    area: 'Fulton/Atlanta metro',
+    address: '424 Decatur St SE, Atlanta, GA 30312',
+    phone: '(678) 843-8600',
+    servicesKeys: ['svcPrimary','svcDental','svcBehavioral','svcSliding'],
+    note: { en: 'Main clinic and headquarters; also runs satellite and mobile sites around metro Atlanta.',
+            es: 'Clínica principal y sede central; también opera sitios satélite y móviles en el área metro de Atlanta.' }
+  },
+  {
+    name: 'Mercy Care at the Gateway Center',
+    area: 'Fulton/Atlanta metro',
+    address: '275 Pryor St SW, Atlanta, GA 30303',
+    phone: '(678) 843-8600',
+    servicesKeys: ['svcPrimary','svcDental','svcBehavioral','svcScreenings'],
+    note: { en: 'Serves benefit recipients, low-income, uninsured, and underinsured adults 18+.',
+            es: 'Atiende a beneficiarios de asistencia, personas de bajos ingresos, y adultos sin seguro o con seguro insuficiente de 18 años o más.' }
+  },
+  {
+    name: 'Family Health Centers of Georgia',
+    area: 'Fulton/Atlanta metro',
+    address: 'Multiple sites, Atlanta (West End and others) + mobile medical/dental unit',
+    phone: 'fhcga.org',
+    servicesKeys: ['svcPrimary','svcDental','svcPediatrics','svcMobile'],
+    note: { en: 'Federally qualified health center; call ahead for the closest current location.',
+            es: 'Centro de salud federalmente calificado; llama con anticipación para la ubicación actual más cercana.' }
+  },
+  {
+    name: 'CPACS Cosmo Health Center',
+    area: 'Fulton/Atlanta metro',
+    address: 'Atlanta metro area',
+    phone: 'cpacscosmo.org',
+    servicesKeys: ['svcPrimary','svcMultilingual','svcFQHC'],
+    note: { en: 'Center for Pan Asian Community Services — federally qualified health center serving low-income, uninsured, and limited-English-proficient residents.',
+            es: 'Center for Pan Asian Community Services — centro de salud federalmente calificado que atiende a residentes de bajos ingresos, sin seguro, y con dominio limitado del inglés.' }
+  },
+  {
+    name: 'Oakhurst Medical Centers',
+    area: 'Fulton/Atlanta metro',
+    address: 'Decatur + metro Atlanta sites',
+    phone: 'oakhurstmedical.org',
+    servicesKeys: ['svcPrimary','svcNoIns','svcIncome','svcFQHC'],
+    note: { en: 'Multiple locations across metro Atlanta. No insurance needed, and prices are based on your income and family size.',
+            es: 'Múltiples ubicaciones en el área metro de Atlanta. No se necesita seguro, y los precios se basan en tus ingresos y el tamaño de tu familia.' }
+  },
+  {
+    name: 'YourTown Health',
+    area: 'Rural west Georgia',
+    address: 'Meriwether, Pike, Lamar, Carroll, Coweta & South Fulton counties',
+    phone: 'yourtownhealth.com',
+    servicesKeys: ['svcPrimary','svcDental','svcBehavioral','svcNoIns','svcSliding','svcFQHC'],
+    note: { en: 'Nonprofit network of six community health centers serving rural west Georgia for 30+ years. No insurance needed: care is offered regardless of insurance or finances, with a sliding fee scale based on household size and income.',
+            es: 'Red sin fines de lucro de seis centros de salud comunitarios que sirve al oeste rural de Georgia desde hace más de 30 años. No se necesita seguro: la atención se ofrece sin importar el seguro o la situación económica, con una escala de tarifas variable según el tamaño del hogar y los ingresos.' }
+  },
+  {
+    name: 'Georgia Lions Lighthouse Foundation',
+    area: 'Statewide',
+    address: 'Locations vary by service (see website)',
+    phone: 'lionslighthouse.org',
+    servicesKeys: ['svcVision','svcExams','svcGlasses','svcHearing'],
+    note: { en: 'Vision care for underinsured Georgians (screenings, eye exams, glasses, and surgical care assistance), plus hearing exams and services. Visit the website to find specific locations for the service you need.',
+            es: 'Atención de la vista para georgianos con seguro insuficiente (exámenes de detección, exámenes de la vista, lentes, y asistencia para atención quirúrgica), además de exámenes y servicios de audición. Visita el sitio web para encontrar ubicaciones específicas según el servicio que necesites.' }
+  }
+];
+const SERVICE_LABELS = {
+  en: { svcMedical:'Medical', svcDental:'Dental', svcSliding:'Sliding scale', svcUninsured:'Uninsured welcome', svcSTI:'STI/HIV testing',
+        svcPrimary:'Primary care', svcBehavioral:'Behavioral health', svcScreenings:'Disease screenings', svcPediatrics:'Pediatrics',
+        svcMobile:'Mobile unit', svcMultilingual:'Multilingual', svcFQHC:'FQHC', svcVision:'Vision screening', svcExams:'Eye exams', svcGlasses:'Eyeglasses',
+        svcNoIns:'No insurance needed', svcIncome:'Income-based pricing', svcHearing:'Hearing exams and services' },
+  es: { svcMedical:'Médico', svcDental:'Dental', svcSliding:'Tarifa variable', svcUninsured:'Se aceptan personas sin seguro', svcSTI:'Pruebas de ITS/VIH',
+        svcPrimary:'Atención primaria', svcBehavioral:'Salud del comportamiento', svcScreenings:'Detección de enfermedades', svcPediatrics:'Pediatría',
+        svcMobile:'Unidad móvil', svcMultilingual:'Multilingüe', svcFQHC:'Centro federalmente calificado', svcVision:'Detección visual', svcExams:'Exámenes de la vista', svcGlasses:'Anteojos',
+        svcNoIns:'No se necesita seguro', svcIncome:'Precios según ingresos', svcHearing:'Exámenes y servicios de audición' }
+};
+const AREA_LABELS = {
+  en: { 'Gwinnett':'Gwinnett County', 'Fulton/Atlanta metro':'Fulton / Atlanta metro', 'Rural west Georgia':'Rural west Georgia', 'Statewide':'Statewide' },
+  es: { 'Gwinnett':'Condado de Gwinnett', 'Fulton/Atlanta metro':'Fulton / área metro de Atlanta', 'Rural west Georgia':'Oeste rural de Georgia', 'Statewide':'Todo el estado' }
+};
+
+function renderClinics(){
+  const searchEl = document.getElementById('clinic-search');
+  const areaEl = document.getElementById('clinic-area');
+  if(!searchEl || !areaEl) return;
+  const q = searchEl.value.trim().toLowerCase();
+  const area = areaEl.value;
+  const list = CLINICS.filter(c=>{
+    const matchesArea = !area || c.area === area;
+    const services = c.servicesKeys.map(k => SERVICE_LABELS[lang][k]).join(' ');
+    const hay = (c.name + ' ' + services + ' ' + AREA_LABELS[lang][c.area]).toLowerCase();
+    const matchesQ = !q || hay.includes(q);
+    return matchesArea && matchesQ;
+  });
+  const el = document.getElementById('clinic-list');
+  if(!list.length){
+    el.innerHTML = '<div class="clinic-empty">'+tr('clinicEmpty')+'</div>';
+    return;
+  }
+  el.innerHTML = list.map(c=>(
+    '<div class="clinic">'
+    + '<div class="clinic-name">'+c.name+'</div>'
+    + '<div class="clinic-meta">'+c.address+' &middot; '+c.phone+' &middot; '+AREA_LABELS[lang][c.area]+'</div>'
+    + '<p style="margin:0;font-size:.88rem;">'+(c.note[lang] || c.note.en)+'</p>'
+    + '<div class="clinic-services">'+c.servicesKeys.map(k=>'<span class="chip">'+SERVICE_LABELS[lang][k]+'</span>').join('')+'</div>'
+    + '</div>'
+  )).join('');
+}
+
+/* ============ ADVOCATE (mental health & clinical literacy, self-advocacy scripts) ============ */
+const MH_TERMS = {
+en: [
+  { term: "Major Depressive Disorder (Depression)", def: "A mood disorder marked by persistent sadness, loss of interest or pleasure, and changes in sleep, appetite, or concentration, lasting most of the day, nearly every day, for at least two weeks." },
+  { term: "Generalized Anxiety Disorder (GAD)", def: "Excessive, hard-to-control worry about everyday things that lasts most days for six months or more, often with restlessness, muscle tension, or trouble sleeping." },
+  { term: "Panic Attack / Panic Disorder", def: "A panic attack is a sudden surge of intense fear that peaks within minutes, often with a racing heart or shortness of breath. Panic Disorder means repeated attacks plus ongoing fear of having another one." },
+  { term: "Post-Traumatic Stress Disorder (PTSD)", def: "A condition that can develop after a traumatic event, marked by intrusive memories, avoidance of reminders, negative changes in mood, and heightened reactivity, lasting more than a month." },
+  { term: "Bipolar Disorder", def: "A mood disorder involving episodes of depression that alternate with episodes of mania or hypomania — periods of unusually elevated energy, mood, or activity." },
+  { term: "Psychosis", def: "A state of losing some contact with reality, which can include hallucinations or fixed false beliefs (delusions). It's a symptom that can occur in several conditions, not a diagnosis on its own." },
+  { term: "Substance Use Disorder", def: "A pattern of alcohol or drug use that causes significant impairment or distress, including difficulty cutting back despite wanting to." },
+  { term: "Co-occurring Disorder", def: "When a mental health condition and a substance use disorder are present at the same time, sometimes called a \"dual diagnosis.\" Treatment usually works best when both are addressed together." },
+  { term: "Suicidal Ideation", def: "Thinking about or considering suicide, ranging from passive thoughts to active thoughts with a plan. It's one of the most common things clinicians screen for, and they're trained to respond without judgment." },
+  { term: "Diagnostic Overshadowing", def: "When a provider attributes a new symptom entirely to a condition you already have, instead of investigating it on its own. Naming this pattern out loud can help redirect the conversation." }
+],
+es: [
+  { term: "Trastorno Depresivo Mayor (Depresión)", def: "Un trastorno del ánimo marcado por tristeza persistente, pérdida de interés o placer, y cambios en el sueño, apetito, o concentración, la mayor parte del día, casi todos los días, durante al menos dos semanas." },
+  { term: "Trastorno de Ansiedad Generalizada (TAG)", def: "Preocupación excesiva y difícil de controlar sobre cosas cotidianas que dura la mayoría de los días durante seis meses o más, a menudo con inquietud, tensión muscular, o dificultad para dormir." },
+  { term: "Ataque de pánico / Trastorno de pánico", def: "Un ataque de pánico es un aumento repentino de miedo intenso que llega a su punto máximo en minutos, a menudo con el corazón acelerado o falta de aire. El trastorno de pánico significa ataques repetidos más miedo constante de tener otro." },
+  { term: "Trastorno de Estrés Postraumático (TEPT)", def: "Una condición que puede desarrollarse después de un evento traumático, marcada por recuerdos intrusivos, evitación de recordatorios, cambios negativos en el ánimo, y reactividad aumentada, que dura más de un mes." },
+  { term: "Trastorno Bipolar", def: "Un trastorno del ánimo que involucra episodios de depresión que alternan con episodios de manía o hipomanía — períodos de energía, ánimo, o actividad inusualmente elevados." },
+  { term: "Psicosis", def: "Un estado de pérdida parcial de contacto con la realidad, que puede incluir alucinaciones o creencias falsas fijas (delirios). Es un síntoma que puede ocurrir en varias condiciones, no un diagnóstico en sí mismo." },
+  { term: "Trastorno por Uso de Sustancias", def: "Un patrón de uso de alcohol o drogas que causa deterioro o angustia significativos, incluyendo dificultad para reducir el consumo aunque se desee." },
+  { term: "Trastorno Concurrente", def: "Cuando una condición de salud mental y un trastorno por uso de sustancias están presentes al mismo tiempo, a veces llamado \"diagnóstico dual\". El tratamiento suele funcionar mejor cuando se abordan ambos juntos." },
+  { term: "Ideación Suicida", def: "Pensar en o considerar el suicidio, desde pensamientos pasivos hasta pensamientos activos con un plan. Es una de las cosas más comunes que los clínicos evalúan, y están capacitados para responder sin juzgar." },
+  { term: "Ensombrecimiento Diagnóstico", def: "Cuando un(a) proveedor(a) atribuye un síntoma nuevo completamente a una condición que ya tienes, en lugar de investigarlo por separado. Nombrar este patrón en voz alta puede ayudar a redirigir la conversación." }
+]
+};
+
+const JARGON_TERMS = {
+en: [
+  { term: "Behavioral health", def: "The clinical umbrella term for mental health and substance use care, used on insurance forms and by clinics instead of \"mental health\" alone." },
+  { term: "Primary Care Provider (PCP)", def: "The doctor, nurse practitioner, or physician assistant you see first for most health concerns, who can refer you to specialists." },
+  { term: "Referral", def: "A formal recommendation sending you to another provider (like a psychiatrist or specialist), sometimes required before insurance will cover the visit." },
+  { term: "Prior authorization", def: "Approval an insurance plan requires before it will pay for certain medications, tests, or treatments. Your provider's office can usually submit this for you." },
+  { term: "Intake appointment", def: "Your first visit with a new provider or clinic, usually focused on gathering your history rather than starting treatment that same day." },
+  { term: "Sliding-scale fee", def: "A cost adjusted based on your income, so people who earn less pay less. Usually requires proof of income to set up." },
+  { term: "Sliding-scale clinic", def: "A clinic that sets your fee based on your income and household size, so a lower income means a lower price. You do not need insurance to be seen. Bring proof of income, photo ID, and proof of address, and ask the clinic to explain its fee tiers before your visit." },
+  { term: "Free clinic", def: "A clinic, often run by a nonprofit, church, or volunteers, that charges little or nothing for visits. Hours and services are often limited, and some have waiting lists, so call ahead." },
+  { term: "FQHC (Federally Qualified Health Center)", def: "A community health center that receives federal funding to serve everyone regardless of insurance or ability to pay, usually on a sliding scale." },
+  { term: "Case management", def: "Support from a staff member who helps you navigate appointments, referrals, and paperwork — separate from your medical or therapy visits." },
+  { term: "Crisis stabilization unit", def: "A short-term facility for someone in an active mental health crisis who needs more support than an outpatient visit but not necessarily a hospital admission." },
+  { term: "Explanation of Benefits (EOB)", def: "A statement your insurer sends after a visit showing what was billed and what it paid. It is not a bill." },
+  { term: "Ombudsman", def: "A hospital staff member you can go to when you're unhappy with your care. They act as a go-between for patients and hospital leaders: they listen to your concern, may speak with staff or look over your records, and talk through ways to resolve it. You choose how much to share, and reports to hospital leaders leave out details that identify you. Source: Cleveland Clinic (2024)." },
+  { term: "211 and 211online", def: "A free, confidential referral line, available 24/7 in multiple languages. Dial 211 (or text 898-211) to reach a specialist who can connect you with local help such as rent and utility assistance, food pantries, and housing. In Georgia the line is run by United Way of Greater Atlanta, and you can also search its online directory at 211online.unitedwayatlanta.org. It's a good place to start when you don't know who to ask. Source: United Way of Greater Atlanta." }
+],
+es: [
+  { term: "Salud del comportamiento (Behavioral health)", def: "El término clínico general para la atención de salud mental y uso de sustancias, usado en formularios de seguro y por las clínicas en lugar de \"salud mental\" solamente." },
+  { term: "Proveedor de Atención Primaria (PCP)", def: "El médico, enfermero(a) practicante, o asistente médico que ves primero para la mayoría de problemas de salud, y quien puede referirte a especialistas." },
+  { term: "Referencia (Referral)", def: "Una recomendación formal que te envía a otro proveedor (como un(a) psiquiatra o especialista), a veces requerida antes de que el seguro cubra la visita." },
+  { term: "Autorización previa", def: "Aprobación que un plan de seguro requiere antes de pagar por ciertos medicamentos, pruebas, o tratamientos. La oficina de tu proveedor usualmente puede enviarla por ti." },
+  { term: "Cita de admisión (Intake)", def: "Tu primera visita con un(a) proveedor(a) o clínica nueva, generalmente enfocada en recopilar tu historial en lugar de comenzar tratamiento ese mismo día." },
+  { term: "Tarifa de escala variable", def: "Un costo ajustado según tu ingreso, para que las personas que ganan menos paguen menos. Usualmente requiere comprobante de ingresos." },
+  { term: "Clínica de tarifa variable", def: "Una clínica que fija tu costo según tu ingreso y el tamaño de tu hogar, así que un ingreso menor significa un precio menor. No necesitas seguro para que te atiendan. Lleva comprobante de ingresos, identificación con foto y comprobante de domicilio, y pide que te expliquen los niveles de tarifa antes de tu visita." },
+  { term: "Clínica gratuita", def: "Una clínica, a menudo dirigida por una organización sin fines de lucro, una iglesia o voluntarios, que cobra poco o nada por las visitas. El horario y los servicios suelen ser limitados y algunas tienen lista de espera, así que llama antes." },
+  { term: "FQHC (Centro de Salud Federalmente Calificado)", def: "Un centro de salud comunitario que recibe fondos federales para atender a todos sin importar el seguro o la capacidad de pago, usualmente con tarifa variable." },
+  { term: "Manejo de caso (Case management)", def: "Apoyo de un(a) miembro del personal que te ayuda a navegar citas, referencias, y papeleo — separado de tus visitas médicas o de terapia." },
+  { term: "Unidad de estabilización de crisis", def: "Un centro de corto plazo para alguien en una crisis activa de salud mental que necesita más apoyo que una visita ambulatoria pero no necesariamente hospitalización." },
+  { term: "Explicación de Beneficios (EOB)", def: "Un estado de cuenta que tu aseguradora envía después de una visita mostrando lo que se facturó y lo que pagó. No es una factura." },
+  { term: "Ombudsman (defensor del paciente)", def: "Un(a) empleado(a) del hospital a quien puedes acudir cuando no estás conforme con la atención que recibes. Actúa como enlace entre los pacientes y los directivos del hospital: escucha tu inquietud, puede hablar con el personal o revisar tu expediente, y conversa contigo sobre cómo resolverla. Tú decides cuánto compartir, y los informes a los directivos no incluyen datos que te identifiquen. Fuente: Cleveland Clinic (2024)." },
+  { term: "211 y 211online", def: "Una línea de referencia gratuita y confidencial, disponible las 24 horas en varios idiomas. Marca 211 (o envía un mensaje de texto al 898-211) para hablar con un(a) especialista que puede conectarte con ayuda local, como asistencia con la renta y los servicios públicos, despensas de alimentos y vivienda. En Georgia la línea es operada por United Way of Greater Atlanta, y también puedes buscar en su directorio en línea: 211online.unitedwayatlanta.org. Es un buen primer paso cuando no sabes a quién preguntarle. Fuente: United Way of Greater Atlanta." }
+]
+};
+
+const ADV_STEPS = {
+en: {
+  before: [
+    "Write down your symptoms with dates, how often they happen, and how they affect your daily life (work, sleep, relationships) — specific details are harder to brush past than vague ones.",
+    "If you've used this app's Mood check-in, print your PHQ-9 results from that tab and bring them.",
+    "Decide your top 1–2 concerns in advance so they don't get lost if the visit feels rushed.",
+    "If it would help, bring a trusted person with you, or ask the clinic about interpreter services."
+  ],
+  during: [
+    "Instead of \"I'm just tired,\" try: \"I've had low energy most days for about three weeks, and it's making it hard to get through work.\"",
+    "Instead of \"I'm anxious,\" try: \"I've been so worried I can't concentrate, and I'm having trouble sleeping most nights.\"",
+    "If you're not sure what's going on, it's okay to say: \"I don't know what this is, but it's affecting my life and I want to understand it.\"",
+    "Ask directly for what you want: \"I'd like to talk about whether this could be depression or anxiety,\" or \"Can we discuss a referral to a specialist?\""
+  ],
+  dismissed: [
+    "\"I hear you, and I'd still like this documented in my chart.\"",
+    "\"Can you help me understand why you don't think further testing or a referral is needed?\"",
+    "\"I'd like a follow-up plan — if this doesn't improve in [timeframe], what should I do next?\"",
+    "\"I think I'd like a second opinion. Can you help me get my records, or should I request them myself?\"",
+    "At a hospital or larger clinic, you can ask: \"Is there a patient advocate or ombudsman I can talk to?\" (An ombudsman is a hospital staff member who handles patient complaints. They listen, look into the problem, and help work toward a fix.)"
+  ]
+},
+es: {
+  before: [
+    "Anota tus síntomas con fechas, con qué frecuencia ocurren, y cómo afectan tu vida diaria (trabajo, sueño, relaciones) — los detalles específicos son más difíciles de ignorar que los vagos.",
+    "Si has usado la Evaluación del ánimo de esta app, imprime tus resultados del PHQ-9 desde esa pestaña y llévalos contigo.",
+    "Decide tus 1 o 2 preocupaciones principales de antemano para que no se pierdan si la visita se siente apresurada.",
+    "Si te ayuda, lleva a alguien de confianza contigo, o pregúntale a la clínica sobre servicios de interpretación."
+  ],
+  during: [
+    "En lugar de \"solo estoy cansado(a),\" intenta: \"He tenido poca energía la mayoría de los días durante unas tres semanas, y me está costando trabajo cumplir con mi trabajo.\"",
+    "En lugar de \"estoy ansioso(a),\" intenta: \"He estado tan preocupado(a) que no puedo concentrarme, y tengo problemas para dormir la mayoría de las noches.\"",
+    "Si no estás seguro(a) de qué está pasando, está bien decir: \"No sé qué es esto, pero está afectando mi vida y quiero entenderlo.\"",
+    "Pide directamente lo que quieres: \"Me gustaría hablar sobre si esto podría ser depresión o ansiedad,\" o \"¿Podemos hablar de una referencia a un(a) especialista?\""
+  ],
+  dismissed: [
+    "\"Le escucho, y aun así me gustaría que esto quede documentado en mi expediente.\"",
+    "\"¿Puede ayudarme a entender por qué no cree que se necesiten más pruebas o una referencia?\"",
+    "\"Me gustaría un plan de seguimiento — si esto no mejora en [plazo de tiempo], ¿qué debo hacer después?\"",
+    "\"Creo que me gustaría una segunda opinión. ¿Puede ayudarme a obtener mis expedientes, o debo solicitarlos yo mismo(a)?\"",
+    "En un hospital o clínica grande, puedes preguntar: \"¿Hay un(a) defensor(a) del paciente u ombudsman con quien pueda hablar?\" (Un ombudsman es un(a) empleado(a) del hospital que atiende las quejas de los pacientes. Escucha, investiga el problema y ayuda a buscar una solución.)"
+  ]
+}
+};
+
+const ADV_DIALOGUE = {
+en: [
+  { speaker: "patient", text: "I've been feeling down most days for about a month. I'm not sleeping well, and I've lost interest in things I used to enjoy, like cooking." },
+  { speaker: "doctor", text: "That's probably just stress. Try to relax more." },
+  { speaker: "patient", text: "I understand stress could be part of it, but this has lasted a month and it's affecting my sleep and my work. I'd like to talk about whether this could be depression, and what my options are." },
+  { speaker: "doctor", text: "Okay — let's go through a few questions." }
+],
+es: [
+  { speaker: "patient", text: "Me he sentido decaído(a) la mayoría de los días durante aproximadamente un mes. No estoy durmiendo bien, y he perdido interés en cosas que solía disfrutar, como cocinar." },
+  { speaker: "doctor", text: "Probablemente es solo estrés. Trate de relajarse más." },
+  { speaker: "patient", text: "Entiendo que el estrés podría ser parte de esto, pero esto ha durado un mes y está afectando mi sueño y mi trabajo. Me gustaría hablar sobre si esto podría ser depresión, y cuáles son mis opciones." },
+  { speaker: "doctor", text: "Está bien — vamos a repasar algunas preguntas." }
+]
+};
+
+function renderAdvocate(){
+  const el = document.getElementById('advocate-content');
+  if(!el) return;
+  const mh = MH_TERMS[lang];
+  const jg = JARGON_TERMS[lang];
+  const steps = ADV_STEPS[lang];
+  const dlg = ADV_DIALOGUE[lang];
+
+  let html = '';
+
+  html += '<div class="adv-section"><h3>'+tr('advMHTermsH')+'</h3><p class="adv-section-sub">'+tr('advMHTermsSub')+'</p>';
+  html += '<div class="term-grid">' + mh.map(t=>'<div class="term-card"><div class="term-name">'+t.term+'</div><div class="term-def">'+t.def+'</div></div>').join('') + '</div></div>';
+
+  html += '<div class="adv-section"><h3>'+tr('advJargonH')+'</h3><p class="adv-section-sub">'+tr('advJargonSub')+'</p>';
+  html += '<div class="term-grid">' + jg.map(t=>'<div class="term-card"><div class="term-name">'+t.term+'</div><div class="term-def">'+t.def+'</div></div>').join('') + '</div></div>';
+
+  html += '<div class="adv-section"><h3>'+tr('advBeforeH')+'</h3><ul class="script-list">' + steps.before.map(s=>'<li>'+s+'</li>').join('') + '</ul></div>';
+  html += '<div class="adv-section"><h3>'+tr('advDuringH')+'</h3><ul class="script-list">' + steps.during.map(s=>'<li>'+s+'</li>').join('') + '</ul></div>';
+  html += '<div class="adv-section"><h3>'+tr('advDismissedH')+'</h3><ul class="script-list">' + steps.dismissed.map(s=>'<li>'+s+'</li>').join('') + '</ul></div>';
+
+  html += '<div class="adv-section"><h3>'+tr('advDialogueH')+'</h3><p class="adv-section-sub">'+tr('advDialogueSub')+'</p>';
+  html += '<div class="dialogue">' + dlg.map(d=>(
+    '<div class="dialogue-line '+d.speaker+'"><div class="dialogue-speaker">'+(d.speaker==='patient' ? (lang==='es'?'Paciente':'Patient') : (lang==='es'?'Médico(a)':'Doctor'))+'</div>'+d.text+'</div>'
+  )).join('') + '</div></div>';
+
+  el.innerHTML = html;
+}
+
+/* ============ PHQ-9 MOOD CHECK-IN (official validated EN/ES wording) ============ */
+const PHQ9_QUESTIONS = {
+  en: [
+    'Little interest or pleasure in doing things',
+    'Feeling down, depressed, or hopeless',
+    'Trouble falling or staying asleep, or sleeping too much',
+    'Feeling tired or having little energy',
+    'Poor appetite or overeating',
+    'Feeling bad about yourself — or that you are a failure, or have let yourself or your family down',
+    'Trouble concentrating on things, such as reading or watching television',
+    'Moving or speaking so slowly that other people could have noticed — or the opposite, being fidgety or restless',
+    'Thoughts that you would be better off dead, or of hurting yourself in some way'
+  ],
+  es: [
+    'Poco interés o placer en hacer cosas',
+    'Se ha sentido decaído(a), deprimido(a) o sin esperanzas',
+    'Ha tenido dificultad para quedarse o permanecer dormido(a), o ha dormido demasiado',
+    'Se ha sentido cansado(a) o con poca energía',
+    'Sin apetito o ha comido en exceso',
+    'Se ha sentido mal con usted mismo(a) — o que es un fracaso o que ha quedado mal con usted mismo(a) o con su familia',
+    'Ha tenido dificultad para concentrarse en ciertas actividades, tales como leer el periódico o ver la televisión',
+    '¿Se ha movido o hablado tan lento que otras personas podrían haberlo notado? O lo contrario — muy inquieto(a) o agitado(a), que ha estado moviéndose mucho más de lo normal',
+    'Pensamientos de que estaría mejor muerto(a) o de lastimarse de alguna manera'
+  ]
+};
+let phqAnswers = new Array(9).fill(null);
+
+function renderPhqForm(){
+  const el = document.getElementById('phq-form');
+  if(!el) return;
+  const qs = PHQ9_QUESTIONS[lang];
+  const opts = [tr('scaleNone'), tr('scaleSeveral'), tr('scaleMore'), tr('scaleNearly')];
+  el.innerHTML = qs.map((q, i)=>(
+    '<div class="q-block">'
+    + '<div class="q-num">'+fmt(tr('qOf'), {n:i+1, total:qs.length})+'</div>'
+    + '<div class="q-text">'+q+'</div>'
+    + '<div class="scale" id="scale-'+i+'" role="group" aria-label="'+q.replace(/"/g,'&quot;')+'">'
+      + opts.map((opt, v)=>(
+          '<button type="button" class="scale-opt'+(phqAnswers[i]===v?' selected':'')+'" aria-pressed="'+(phqAnswers[i]===v)+'" data-q="'+i+'" data-v="'+v+'" onclick="selectPhq('+i+','+v+')">'+opt+'</button>'
+        )).join('')
+    + '</div>'
+    + '</div>'
+  )).join('');
+}
+function selectPhq(q, v){
+  phqAnswers[q] = v;
+  document.querySelectorAll('#scale-'+q+' .scale-opt').forEach(el=>{
+    const isSelected = parseInt(el.dataset.v,10) === v;
+    el.classList.toggle('selected', isSelected);
+    el.setAttribute('aria-pressed', isSelected);
+  });
+}
+
+function loadMoodHistory(){
+  try {
+    const raw = localStorage.getItem('gapcarega_phq9_history');
+    return raw ? JSON.parse(raw) : [];
+  } catch(e){ return []; }
+}
+function saveMoodEntry(entry){
+  try {
+    const hist = loadMoodHistory();
+    hist.push(entry);
+    localStorage.setItem('gapcarega_phq9_history', JSON.stringify(hist.slice(-12)));
+  } catch(e){ /* storage unavailable; continue silently */ }
+}
+
+function scorePhq(){
+  if(phqAnswers.some(a=>a===null)){
+    alert(tr('fillAllQ'));
+    return;
+  }
+  const total = phqAnswers.reduce((a,b)=>a+b, 0);
+  const q9 = phqAnswers[8];
+
+  let bandKey, bandDescKey;
+  if(total <= 4){ bandKey='bandMinimal'; bandDescKey='bandMinimalDesc'; }
+  else if(total <= 9){ bandKey='bandMild'; bandDescKey='bandMildDesc'; }
+  else if(total <= 14){ bandKey='bandModerate'; bandDescKey='bandModerateDesc'; }
+  else if(total <= 19){ bandKey='bandModSevere'; bandDescKey='bandModSevereDesc'; }
+  else { bandKey='bandSevere'; bandDescKey='bandSevereDesc'; }
+
+  const box = document.getElementById('mood-result');
+  box.style.display = 'block';
+  let html = '<div class="score-band"><div class="score-big">'+total+'</div><div class="score-of">'+tr('scoreOf')+' &middot; '+tr(bandKey)+'</div></div>';
+  html += '<p>'+tr(bandDescKey)+'</p>';
+
+  if(q9 > 0){
+    html += '<div class="verdict warn"><h3>'+tr('q9WarnH')+'</h3><p>'+tr('q9WarnP')+'</p></div>';
+  }
+
+  html += '<div class="notice">'+tr('moodBottomNotice')+'</div>';
+  html += '<button class="btn" style="margin-top:4px;" onclick="window.print()">'+tr('printBtn')+'</button>';
+  box.innerHTML = html;
+
+  saveMoodEntry({ date: new Date().toISOString().slice(0,10), total, q9 });
+  renderMoodHistory();
+
+  if(q9 > 0){ openCrisisModal(); }
+
+  box.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderMoodHistory(){
+  const hist = loadMoodHistory();
+  const wrap = document.getElementById('mood-history');
+  if(!wrap) return;
+  if(!hist.length){ wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const bars = document.getElementById('history-bars');
+  const labels = document.getElementById('history-labels');
+  bars.innerHTML = hist.map(h=>{
+    const pct = Math.max(4, Math.round((h.total/27)*100));
+    return '<div class="history-bar"><div class="fill" style="height:'+pct+'%;"></div><span class="sr-only">'+h.date+': '+h.total+'/27</span></div>';
+  }).join('');
+  labels.innerHTML = hist.map(h=> '<span>'+h.date.slice(5)+' ('+h.total+')</span>').join('');
+}
+
+/* ============ INIT ============ */
+applyTranslations();
+
+</script>
+</body>
+</html>
